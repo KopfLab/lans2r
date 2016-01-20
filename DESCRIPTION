@@ -2,10 +2,11 @@ Package: lans2r
 Type: Package
 Title: Work with Look at NanoSIMS data in R
 Version: 0.1
-Date: 2014-07-21
+Date: 2016-01-20
 Author: Sebastian Kopf
 Maintainer: Sebastian Kopf <seb.kopf@gmail.com>
-Description: R interface for working with NanoSIMS ROI data defined in Look at NanoSIMS
+Description: R interface for working with NanoSIMS ROI data defined in Look at
+    NanoSIMS
 License: GPL-3
 LazyLoad: yes
 Roxygen: list(wrap = FALSE)
@@ -13,9 +14,20 @@ VignetteBuilder: knitr
 URL: https://github.com/sebkopf/lans2r
 BugReports: https://github.com/sebkopf/lans2r/issues
 Depends:
-  reshape2,
-  plyr
+    dplyr
+Imports:
+    tidyr,
+    lazyeval,
+    reshape2,
+    R.matlab
 Suggests:
-  isotopia,
-  xlsx
+    ggplot2
 Collate:
+    'calculations.R'
+    'isotope_math.R'
+    'load_data.R'
+    'plotting.R'
+    'read_hmr_files.R'
+    'read_data_files.R'
+    'package.R'
+RoxygenNote: 5.0.0
