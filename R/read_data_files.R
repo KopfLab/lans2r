@@ -113,9 +113,10 @@ read_roi_ion_zstack_data_file <- function (file) {
       col = sub("V(\\d+)", "\\1", var) %>% as.numeric,
       var = ifelse(col %% 2 == 0, "value", "sigma")) %>% 
     select(-col) %>% 
+    ungroup() %>% 
     tidyr::spread(var, value) %>% 
     mutate(plane = as.character(plane), # to fit with 'all' plane
-           sigma = iso.errN(value)) # recalculating it to me more precise
+           sigma = iso.errN(value)) # recalculating it to be more precise
 }
 
 # Raw data (.mat) files ============
