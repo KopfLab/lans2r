@@ -11,8 +11,7 @@ You can install this package directly from [GitHub](https://github.com/sebkopf/l
 
 ```{r, eval=FALSE}
 install.packages("devtools")
-library(devtools)
-install_github('sebkopf/lans2r')
+devtools::install_github('sebkopf/lans2r')
 ```
 
 ## Load data
@@ -40,6 +39,15 @@ data <-
 ```
 
 To calculate ratios and abundances, simply specificy which ions you would like to ratio. Note: for convenience, we make use of the pipe operator `%>%` for chaining multiple operations. For more information on the pipe, take a look at the [magrittr package](https://cran.r-project.org/web/packages/magrittr/index.html).
+
+```{r}
+source("R/calculations.R")
+
+test <- data %>% 
+  calculate_ratios(c("13C", "12C"), c("15N12C", "14N12C"), c("15C", "12C")) %>% # calculate isotope ratios
+  calculate_abundances(c("13C", "12C"), c("15N12C", "14N12C"), c("15C", "12C")) # calculate abundances
+```
+
 
 ```{r}
 data <- data %>% 

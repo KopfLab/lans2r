@@ -18,14 +18,20 @@ calculate_ratios <- function(data, ..., quiet = F) {
   if(is.null(data$value)) stop("'value' column does not exist")
   if(is.null(data$data_type)) stop("'data_type' column does not exist")
   
-  # generate function calls to make calculations
+  # checks
   params <- list(...)
+  missing <- setdiff(params %>% unlist(), filter(data, data_type == "ion_count")$variable %>% unique)
+  if (length(missing) > 0) {
+    stop("some variables do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
+  }
+  
+  # generate function calls to make calculations
   var_new <- sapply(params, function(i) paste0(i[1],"/",i[2]))
   val_fields <- 
-    lapply(params, function(i) lazyeval::interp(~iso.R(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
+    lapply(params, function(i) lazyeval::interp(~lans2r:::iso.R(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
     setNames(var_new)
   err_fields <- 
-    lapply(params, function(i) lazyeval::interp(~iso.errR(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
+    lapply(params, function(i) lazyeval::interp(~lans2r:::iso.errR(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
     setNames(var_new)
   
   # existing variables
@@ -61,6 +67,7 @@ calculate_ratios <- function(data, ..., quiet = F) {
   bind_rows(
     data %>% filter(! (data_type == "ratio" & variable %in% var_new)), # make sure no duplicates
     suppressMessages(left_join(values, error)) %>% 
+      filter(!is.na(value)) %>% # remove non existent ratios
       mutate(data_type = "ratio") %>% 
       mutate(variable = as.character(variable)) # don't like the factor it introduces
   )
@@ -87,14 +94,20 @@ calculate_abundances <- function(data, ..., quiet = F) {
   if(is.null(data$value)) stop("'value' column does not exist")
   if(is.null(data$data_type)) stop("'data_type' column does not exist")
   
-  # generate function calls to make calculations
+  # checks
   params <- list(...)
+  missing <- setdiff(params %>% unlist(), filter(data, data_type == "ion_count")$variable %>% unique)
+  if (length(missing) > 0) {
+    stop("some variables do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
+  }
+  
+  # generate function calls to make calculations
   var_new <- sapply(params, function(i) paste(i[1], "F"))
   val_fields <- 
-    lapply(params, function(i) lazyeval::interp(~100*iso.F(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
+    lapply(params, function(i) lazyeval::interp(~100*lans2r:::iso.F(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
     setNames(var_new)
   err_fields <- 
-    lapply(params, function(i) lazyeval::interp(~100*iso.errF(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
+    lapply(params, function(i) lazyeval::interp(~100*lans2r:::iso.errF(NM, Nm), NM = as.name(i[2]), Nm = as.name(i[1]))) %>% 
     setNames(var_new)
   
   # existing variables
@@ -130,6 +143,7 @@ calculate_abundances <- function(data, ..., quiet = F) {
   bind_rows(
     data %>% filter(! (data_type == "abundance" & variable %in% var_new)), # make sure no duplicates
     suppressMessages(left_join(values, error)) %>% 
+      filter(!is.na(value)) %>% # remove non existent abundances
       mutate(data_type = "abundance") %>% 
       mutate(variable = as.character(variable)) # don't like the factor it introduces
   )
