@@ -18,10 +18,11 @@ minor isotope, e.g. c("13C", "12C"), c("15N12C", "14C12C"), ...}
 the original data frame with the ratio information appended (all ratios have data_type == "ratio")
 }
 \description{
-This function calculates the isotope ratios and resulting counting
+This function calculates the ratios and resulting counting
 statistics error from the raw ion counts. It can be applied to data from both
 LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
-from many analyses.
+from many analyses. It can also be applied to ion_sums generate by calculate_sums
+to calculate elemental ratios (careful, ionization efficiencies skew their scaling!)
 }
 \note{
 TODO: see if can improve performance by avoiding the call to spread and use joins instead.

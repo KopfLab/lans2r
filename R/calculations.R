@@ -72,17 +72,18 @@ calculate_sums <- function(data, ..., quiet = F) {
     data %>% filter(! (data_type == "ion_count" & variable %in% var_new)), # make sure no duplicates
     suppressMessages(left_join(values, error)) %>% 
       filter(!is.na(value)) %>% # remove non existent abundances
-      mutate(data_type = "ion_count") %>% 
+      mutate(data_type = "ion_sum") %>% 
       mutate(variable = as.character(variable)) # don't like the factor it introduces
   )
 }
 
 #' Calculate isotope ratios
 #' 
-#' This function calculates the isotope ratios and resulting counting
+#' This function calculates the ratios and resulting counting
 #' statistics error from the raw ion counts. It can be applied to data from both
 #' LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
-#' from many analyses.
+#' from many analyses. It can also be applied to ion_sums generate by calculate_sums
+#' to calculate elemental ratios (careful, ionization efficiencies skew their scaling!)
 #' 
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
 #' @param ... the ratios to calculate, each entry is one ratio with major isotope first, then
@@ -99,9 +100,9 @@ calculate_ratios <- function(data, ..., quiet = F) {
   
   # checks
   params <- list(...)
-  missing <- setdiff(params %>% unlist(), filter(data, data_type == "ion_count")$variable %>% unique)
+  missing <- setdiff(params %>% unlist(), filter(data, data_type %in% c("ion_count", "ion_sum"))$variable %>% unique)
   if (length(missing) > 0) {
-    stop("some variables do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
+    stop("some ion_counts or ion_sums do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
   }
   
   # generate function calls to make calculations
@@ -114,18 +115,18 @@ calculate_ratios <- function(data, ..., quiet = F) {
     setNames(var_new)
   
   # existing variables
-  var_old <- (data %>% filter(data_type == "ion_count"))$variable %>% unique() %>% setdiff(var_new)
+  var_old <- (data %>% filter(data_type %in% c("ion_count", "ion_sum")))$variable %>% unique() %>% setdiff(var_new)
   var_old_deselect <- lapply(var_old, function(i) lazyeval::interp(~-var, var = as.name(i)))
   
   values <- 
-    data %>% filter(data_type == "ion_count") %>% 
+    data %>% filter(data_type %in% c("ion_count", "ion_sum")) %>% 
     select(-sigma) %>% 
     tidyr::spread(variable, value) %>% 
     mutate_(.dots = val_fields) %>% 
     select_(.dots = var_old_deselect) %>% 
     tidyr::gather_("variable", "value", var_new) 
   error <- 
-    data %>% filter(data_type == "ion_count") %>% 
+    data %>% filter(data_type %in% c("ion_count", "ion_sum")) %>% 
     select(-sigma) %>% 
     tidyr::spread(variable, value) %>% 
     mutate_(.dots = err_fields) %>% 
@@ -135,7 +136,7 @@ calculate_ratios <- function(data, ..., quiet = F) {
   if (!quiet) {
     sprintf(
       paste0(
-        "INFO: %d isotope ratios + errors calculated and added to the data frame with data_type 'ratio'",
+        "INFO: %d ratios + errors calculated and added to the data frame with data_type 'ratio'",
         "\n      ratios added (stored in 'variable' column): %s"),
       nrow(values), 
       (values %>% count(variable) %>% mutate(label = paste0("'", variable, "' (", n, "x)")))$label %>% paste(collapse = ", ")
@@ -177,7 +178,7 @@ calculate_abundances <- function(data, ..., quiet = F) {
   params <- list(...)
   missing <- setdiff(params %>% unlist(), filter(data, data_type == "ion_count")$variable %>% unique)
   if (length(missing) > 0) {
-    stop("some variables do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
+    stop("some ion_counts do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
   }
   
   # generate function calls to make calculations
@@ -211,7 +212,7 @@ calculate_abundances <- function(data, ..., quiet = F) {
   if (!quiet) {
     sprintf(
       paste0(
-        "INFO: %d isotope abundances + errors calculated and added to the data frame with data_type 'abundance'",
+        "INFO: %d abundances + errors calculated (in %%!) and added to the data frame with data_type 'abundance'",
         "\n      fractional abundances added (stored in 'variable' column): %s"),
       nrow(values), 
       (values %>% count(variable) %>% mutate(label = paste0("'", variable, "' (", n, "x)")))$label %>% paste(collapse = ", ")
