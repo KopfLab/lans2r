@@ -3,7 +3,7 @@
 #' This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. \link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
 #' 
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
-#' @param ... the columns to send to the value, error and naming function for each derived value, e.g. c("12C", "13C", "12C14N"), the number of parameters needs to match those expected by the value, error and name functions
+#' @param ... the columns to send to the value, error and naming function for each derived value, e.g. c("12C", "13C", "12C14N"), the number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c("12C", "12C sigma") would pass both the value and error of this variable to the value and error function.
 #' @param value_fun a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...
 #' @param error_fun a custom function used to calcluate the error (sigma) for the derived value
 #' @param name_fun a custom function used to construct the variable name for the derived quantity
@@ -21,7 +21,7 @@ calculate <- function(data, data_type, ..., value_fun,
   
   # checks
   params <- list(...)
-  missing <- setdiff(params %>% unlist(), data$variable %>% unique)
+  missing <- setdiff(params %>% unlist(), c(names(data), data$variable %>% unique, data$variable %>% unique %>% paste("sigma")))
   if (length(missing) > 0) {
     stop("some variables do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
   }
@@ -31,32 +31,43 @@ calculate <- function(data, data_type, ..., value_fun,
   val_fields <-
     lapply(params, function(i) {
       func_call <- sprintf("f(`%s`)", i %>% paste(collapse = "`,`"))
-      as.lazy(func_call, parent.frame()) %>% interp(f = value_fun)
+      lazyeval::as.lazy(func_call, parent.frame()) %>% lazyeval::interp(f = value_fun)
     }) %>% setNames(var_new)
   
   err_fields <-
     lapply(params, function(i) {
       func_call <- sprintf("f(`%s`)", i %>% paste(collapse = "`,`"))
-      as.lazy(func_call, parent.frame()) %>% interp(f = error_fun)
+      lazyeval::as.lazy(func_call, parent.frame()) %>% lazyeval::interp(f = error_fun)
     }) %>% setNames(var_new)
   
   # figure out what are the actual new variables (includes overriding old ones)
   var_old <- data$variable %>% unique() %>% setdiff(var_new)
   var_new_select <- lapply(var_old, function(i) lazyeval::interp(~-var, var = as.name(i)))
   
+  # calculate values and error
+  df <- 
+    suppressMessages(
+      left_join(
+        data %>% 
+          select(-sigma, -data_type) %>% 
+          tidyr::spread(variable, value),
+        data %>% 
+          mutate(variable = paste(variable, "sigma")) %>% 
+          select(-value, -data_type) %>% 
+          tidyr::spread(variable, sigma)
+      ))
+  
   values <- 
-    data %>%  
-    select(-sigma, -data_type) %>% 
-    tidyr::spread(variable, value) %>% 
+    df %>% 
     mutate_(.dots = val_fields) %>% 
+    select(-ends_with("sigma")) %>% 
     select_(.dots = var_new_select) %>% 
     tidyr::gather_("variable", "value", var_new) 
   
   error <- 
-    data %>% 
-    select(-sigma, -data_type) %>% 
-    tidyr::spread(variable, value) %>% 
+    df %>% 
     mutate_(.dots = err_fields) %>% 
+    select(-ends_with("sigma")) %>% 
     select_(.dots = var_new_select) %>% 
     tidyr::gather_("variable", "sigma", var_new) 
   
@@ -144,7 +155,7 @@ calculate_ratios <- function(data, ..., quiet = F) {
     ...,
     value_fun = function(m, M) lans2r:::iso.R(M, m),
     error_fun = function(m, M) lans2r:::iso.errR(M, m),
-    name_fun = function(m, M) paste0(m,"/x",M),
+    name_fun = function(m, M) paste0(m,"/",M),
     quiet = quiet
   )
 }
@@ -173,7 +184,7 @@ calculate_abundances <- function(data, ..., quiet = F) {
     ...,
     value_fun = function(m, M) 100*lans2r:::iso.F(M, m),
     error_fun = function(m, M) 100*lans2r:::iso.errF(M, m),
-    name_fun = function(m, M) paste(m, "xF"),
+    name_fun = function(m, M) paste(m, "F"),
     quiet = quiet
   )
   

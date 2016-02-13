@@ -11,7 +11,7 @@ calculate(data, data_type, ..., value_fun, error_fun = function(...)
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
 
-\item{...}{the columns to send to the value, error and naming function for each derived value, e.g. c("12C", "13C", "12C14N"), the number of parameters needs to match those expected by the value, error and name functions}
+\item{...}{the columns to send to the value, error and naming function for each derived value, e.g. c("12C", "13C", "12C14N"), the number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c("12C", "12C sigma") would pass both the value and error of this variable to the value and error function.}
 
 \item{value_fun}{a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...}
 

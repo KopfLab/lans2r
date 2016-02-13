@@ -47,7 +47,24 @@ data <- data %>%
   calculate_abundances(c("13C", "12C"), c("15N12C", "14N12C")) # calculate abundances
 ```
 
-For additional operations, one can use the more generic `calculate` function and provide custom functions for value and error calculations and name construction. Here, we have APE (atom percent enrichment) as an example
+For additional operations, one can use the more generic `calculate` function and provide custom functions for value and error calculations and name construction. Here, we have APE (atom percent enrichment) as an example.
+
+```{r}
+data <- data %>% 
+  mutate(F13C_natural = 1.111, F15N_natural = 0.366) %>% 
+  calculate(
+    data_type = "APE",
+    c("13C F", "F13C_natural", "13C F sigma"), 
+    c("15N12C F", "F15N_natural", "15N12C F sigma"),
+    # calculate the APE value as the fractional abundance enrichment above natural
+    value_fun = function(val, nat, sigma) val - nat,
+    # assume the error in natural abundance is negligible so only F error propagates
+    error_fun = function(val, nat, sigma) sigma,
+    # replace the F in the existing columnes with APE to make the new variable
+    name_fun = function(val_col, ...) sub("F", "APE", val_col)
+  )
+```
+
 
 #### Overview
 
@@ -74,7 +91,7 @@ data %>%
 
 Plot all the data using the *ggplot* package.
 
-```{r, fig.width = 10, fig.height = 8}
+```{r, fig.width = 12, fig.height = 8}
 library(ggplot2)
 data %>% 
   ggplot() +
