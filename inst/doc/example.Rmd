@@ -38,7 +38,7 @@ data <-
   ) 
 ```
 
-To calculate ratios and abundances, simply specificy which ions you would like to ratio. Note: for convenience, we make use of the pipe operator `%>%` for chaining multiple operations. For more information on the pipe, take a look at the [magrittr package](https://cran.r-project.org/web/packages/magrittr/index.html).
+To calculate ratios and abundances, simply specificy which ions you would like to ratio. Note: for convenience, we make use of the pipe operator `%>%` for chaining multiple operations. For more information on the pipe, take a look at the [magrittr package](https://cran.r-project.org/web/packages/magrittr/index.html). 
 
 ```{r}
 data <- data %>% 
@@ -46,6 +46,8 @@ data <- data %>%
   calculate_ratios(c("13C", "12C"), c("15N12C", "14N12C"), c("13C+12C", "15N12C+14N12C")) %>% # calculate ratios
   calculate_abundances(c("13C", "12C"), c("15N12C", "14N12C")) # calculate abundances
 ```
+
+For additional operations, one can use the more generic `calculate` function and provide custom functions for value and error calculations and name construction. Here, we have APE (atom percent enrichment) as an example
 
 #### Overview
 
@@ -66,6 +68,7 @@ data %>%
   spread(variable, value) %>% 
   kable()
 ```
+
 
 #### Plotting
 

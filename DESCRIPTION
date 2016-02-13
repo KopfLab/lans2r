@@ -17,6 +17,7 @@ Depends:
     dplyr
 Imports:
     tidyr,
+    magrittr,
     lazyeval,
     reshape2,
     R.matlab

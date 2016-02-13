@@ -9,22 +9,18 @@ calculate_sums(data, ..., quiet = F)
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
 
-\item{...}{the ion sums to calculate, each entry is for one sum of two ions,
+\item{...}{the ion sums to calculate, each entry is for one sum of as many ions as desired,
 e.g. c("13C", "12C"), c("15N12C", "14C12C"), ...}
 
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }
 \value{
-the original data frame with the fractional abundance information appended (all fractoinal abundances are in % and have data_type == "abundance")
+the original data frame with the sums information appended (data_type == "ion_sum")
 }
 \description{
 This function calculates the ion sums and resulting counting
 statistics error from multiple raw ion counts. It can be applied to data from both
 LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 from many analyses.
-}
-\note{
-TODO: right now only supports sum of two ions, make this more flexible by introducing
- a flexible function call that can take multiple paramters
 }
 
