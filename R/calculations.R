@@ -40,87 +40,72 @@ calculate <- function(data, data_type, ..., value_fun,
       lazyeval::as.lazy(func_call, parent.frame()) %>% lazyeval::interp(f = error_fun)
     }) %>% setNames(var_new)
   
+  # figure out what are the actual new variables (includes overriding old ones)
   new_data_type <- data_type
-  grps <- groups(data) %>% as.character()
+  var_old <- data$variable %>% unique() %>% setdiff(var_new)
+  var_new_select <- lapply(var_old, function(i) lazyeval::interp(~-var, var = as.name(i)))
   
-  # in case of grouping, do calculatiosn with do
-  data_out <- 
-    data %>% 
+  # spread data into wide format (relies on groups getting carried through the spread)
+  df <- 
+    suppressMessages(
+      left_join(
+        data %>% 
+          select(-sigma, -data_type) %>% 
+          tidyr::spread(variable, value),
+        data %>% 
+          mutate(variable = paste(variable, "sigma")) %>% 
+          select(-value, -data_type) %>% 
+          tidyr::spread(variable, sigma)
+      ))
+
+  # just in case of grouping, make calculations with do
+  new_data <- 
+    df %>% 
     do({
       
-      df <- .
+      df_group <- .
       
-      # checks for individual groups
-      if (length(grps) > 0) {
-        missing <- setdiff(params %>% unlist(), c(names(df), df$variable %>% unique(), df$variable %>% unique() %>% paste("sigma")))
-        if (length(missing) > 0) {
-          if (!quiet) {
-            message("group '", df[1,grps]  %>% as.character() 
-                    , "' is missing some variables and will be skipped for calculation: ", 
-                    missing %>% paste(collapse = ", ")) 
-          }
-          return(df)
-        }
-      }
-      
-      # figure out what are the actual new variables (includes overriding old ones)
-      var_old <- df$variable %>% unique() %>% setdiff(var_new)
-      var_new_select <- lapply(var_old, function(i) lazyeval::interp(~-var, var = as.name(i)))
-      
-      # calculate values and error
-      df <- 
-        suppressMessages(
-          left_join(
-            df %>% 
-              select(-sigma, -data_type) %>% 
-              tidyr::spread(variable, value),
-            df %>% 
-              mutate(variable = paste(variable, "sigma")) %>% 
-              select(-value, -data_type) %>% 
-              tidyr::spread(variable, sigma)
-          ))
-      
+      # calculate values and error within in each group
       values <- 
-        df %>% 
+        df_group %>% 
         mutate_(.dots = val_fields) %>% 
         select(-ends_with("sigma")) %>% 
         select_(.dots = var_new_select) %>% 
         tidyr::gather_("variable", "value", var_new) 
       
       error <- 
-        df %>% 
+        df_group %>% 
         mutate_(.dots = err_fields) %>% 
         select(-ends_with("sigma")) %>% 
         select_(.dots = var_new_select) %>% 
         tidyr::gather_("variable", "sigma", var_new) 
       
-      
-      # combine old data with new data
-      bind_rows(
-        filter(., !variable %in% var_new), # make sure no duplicates
-        suppressMessages(left_join(values, error)) %>% 
-          filter(!is.na(value)) %>% # remove calcluations that don't exist
-          mutate(data_type = new_data_type) %>% 
-          mutate(variable = as.character(variable)) # don't like the factor it introduces
-      )
-  })
+      suppressMessages(left_join(values, error))  %>% 
+        mutate(variable = as.character(variable)) %>% # don't like the factor it introduces
+        return()
+  }) %>% 
+  filter(!is.na(value)) %>% # remove calcluations that don't exist
+  mutate(data_type = new_data_type)
   
+  # info
   if (!quiet) {
     sprintf(
       paste0(
         "INFO: %d '%s' values + errors calculated and added to the data frame",
         "\n      values added (stored in 'variable' column): %s"),
-      data_out %>% filter(variable %in% var_new) %>% nrow(), new_data_type,
-      data_out %>% filter(variable %in% var_new) %>% 
-        group_by(variable) %>% 
-        tally() %>%
+      new_data %>%  nrow(), new_data_type,
+      new_data %>% 
+        group_by(variable) %>% tally() %>%
         mutate(label = paste0("'", variable, "' (", n, "x)")) %>% 
-        magrittr::extract2("label") %>% 
-        paste(collapse = ", ")
+        magrittr::extract2("label") %>% paste(collapse = ", ")
     ) %>% message()
   }
   
-  return(data_out)
+  # combine old data with new data
+  bind_rows(
+    data %>% filter(!variable %in% var_new), # make sure no duplicates
+    new_data
+  )
 }
 
 
