@@ -13,8 +13,7 @@ Reference: Polerecky L., Adam B., Milucka J., Musat N., Vagner T. and Kuypers M.
 
 ```{r, eval=FALSE}
 install.packages("devtools")
-library(devtools)
-install_github('sebkopf/lans2r')
+devtools::install_github('sebkopf/lans2r')
 ```
 
 ## Example
