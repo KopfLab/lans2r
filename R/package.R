@@ -13,4 +13,5 @@
 #' @include calculations.R
 #' @include read_hmr_files.R
 #' @include plotting.R
+#' @importFrom lazyeval lazy
 NULL

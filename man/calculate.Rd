@@ -6,10 +6,10 @@
 \usage{
 calculate(data, data_type, ..., value_fun, error_fun = function(...)
   return(NA), name_fun = function(...) return(paste(list(...), collapse =
-  " ")), quiet = F)
+  " ")), filter_new = NULL, quiet = F)
 }
 \arguments{
-\item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
+\item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}, can be grouped to do calculations within individual groups}
 
 \item{...}{the columns to send to the value, error and naming function for each derived value, e.g. c("12C", "13C", "12C14N"), the number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c("12C", "12C sigma") would pass both the value and error of this variable to the value and error function.}
 
@@ -18,6 +18,8 @@ calculate(data, data_type, ..., value_fun, error_fun = function(...)
 \item{error_fun}{a custom function used to calcluate the error (sigma) for the derived value}
 
 \item{name_fun}{a custom function used to construct the variable name for the derived quantity}
+
+\item{filter_new}{an expression to apply as a filter on the new data rows (e.g. plane == "all")}
 
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }
