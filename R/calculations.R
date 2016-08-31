@@ -7,13 +7,16 @@
 #' @param value_fun a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...
 #' @param error_fun a custom function used to calcluate the error (sigma) for the derived value
 #' @param name_fun a custom function used to construct the variable name for the derived quantity
+#' @param filter_new an expression to apply as a filter on the new data rows (e.g. plane == "all")
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @return the original data frame with the sums information appended (data_type == "ion_sum")
 #' @export
 calculate <- function(data, data_type, ..., value_fun, 
                       error_fun = function(...) return(NA), 
                       name_fun = function(...) return(paste(list(...), collapse = " ")),
+                      filter_new = NULL,
                       quiet = F) {
+  
   # checks
   if(is.null(data$variable)) stop("'variable' column does not exist")
   if(is.null(data$value)) stop("'value' column does not exist")
@@ -57,7 +60,7 @@ calculate <- function(data, data_type, ..., value_fun,
           select(-value, -data_type) %>% 
           tidyr::spread(variable, sigma)
       ))
-
+  
   # just in case of grouping, make calculations with do
   new_data <- 
     df %>% 
@@ -83,18 +86,28 @@ calculate <- function(data, data_type, ..., value_fun,
       suppressMessages(left_join(values, error))  %>% 
         mutate(variable = as.character(variable)) %>% # don't like the factor it introduces
         return()
-  }) %>% 
-  filter(!is.na(value)) %>% # remove calcluations that don't exist
-  mutate(data_type = new_data_type)
+    }) %>% 
+    filter(!is.na(value)) %>% # remove calcluations that don't exist
+    mutate(data_type = new_data_type)
+  
+  # filter out parts of it
+  if (!missing(filter_new)) {
+    apply_filter <- lazy(filter_new)
+    new_data_add <- new_data %>% 
+      filter_(.dots = list(apply_filter))
+  } else {
+    new_data_add <- new_data
+  }
   
   # info
   if (!quiet) {
     sprintf(
       paste0(
-        "INFO: %d '%s' values + errors calculated and added to the data frame",
+        "INFO: %d '%s' values + errors calculated, %d added (subset: %s)",
         "\n      values added (stored in 'variable' column): %s"),
-      new_data %>%  nrow(), new_data_type,
-      new_data %>% 
+      new_data %>%  nrow(), new_data_type, nrow(new_data_add),
+      if(!missing(filter_new)) deparse(apply_filter$exp) else "all",
+      new_data_add %>% 
         group_by(variable) %>% tally() %>%
         mutate(label = paste0("'", variable, "' (", n, "x)")) %>% 
         magrittr::extract2("label") %>% paste(collapse = ", ")
@@ -104,9 +117,10 @@ calculate <- function(data, data_type, ..., value_fun,
   # combine old data with new data
   bind_rows(
     data %>% filter(!variable %in% var_new), # make sure no duplicates
-    new_data
+    new_data_add
   )
 }
+
 
 
 

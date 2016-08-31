@@ -10,3 +10,5 @@
 
 # temporary test files
 temp/
+
+.DS_*

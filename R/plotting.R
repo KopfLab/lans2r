@@ -27,8 +27,8 @@ plot_maps <- function(data, draw_ROIs = T, normalize = T, color_scale = c("black
     ggplot() + 
     aes(x.um, y.um) + 
     geom_raster(aes(fill = value)) +
-    scale_y_continuous(expression("x ["*mu*"m]"), expand = c(0,0)) +
-    scale_x_continuous(expression("y ["*mu*"m]"), expand = c(0,0)) +
+    scale_y_continuous(expression("y ["*mu*"m]"), expand = c(0,0)) +
+    scale_x_continuous(expression("x ["*mu*"m]"), expand = c(0,0)) +
     scale_fill_continuous(low=color_scale[1], high=color_scale[2]) +
     expand_limits(x = c(0, data$frame_size[1]), y = c(0, data$frame_size[1])) +
     theme_bw() + 

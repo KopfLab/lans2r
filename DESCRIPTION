@@ -1,8 +1,8 @@
 Package: lans2r
 Type: Package
 Title: Work with Look at NanoSIMS data in R
-Version: 0.1
-Date: 2016-01-20
+Version: 0.1.1
+Date: 2016-08-30
 Author: Sebastian Kopf
 Maintainer: Sebastian Kopf <seb.kopf@gmail.com>
 Description: R interface for working with NanoSIMS ROI data defined in Look at
