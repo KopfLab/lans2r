@@ -5,19 +5,18 @@
 \title{Calculate derived data}
 \usage{
 calculate(data, data_type, ..., value_fun, error_fun = function(...)
-  return(NA), name_fun = function(...) return(paste(list(...), collapse =
-  " ")), filter_new = NULL, quiet = F)
+  return(NA), name_fun = default_name, filter_new = NULL, quiet = F)
 }
 \arguments{
-\item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}, can be grouped to do calculations within individual groups}
+\item{data}{a data frame with lans2r data, can be grouped to do calculations within individual groups}
 
-\item{...}{the columns to send to the value, error and naming function for each derived value, e.g. c("12C", "13C", "12C14N"), the number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c("12C", "12C sigma") would pass both the value and error of this variable to the value and error function.}
+\item{...}{the parameters to send to the value, error and naming function for each derived value. These are always expressions that can include references to variable columns, arithmetic and constants, e.g. c(`12C`, `13C`) or c("test", 100*(`12C`+`13C`)). The number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c(`12C`, `12C sigma`) would pass both the value and error of this variable to the functions.}
 
 \item{value_fun}{a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...}
 
-\item{error_fun}{a custom function used to calcluate the error (sigma) for the derived value}
+\item{error_fun}{a custom function used to calcluate the error (sigma) for the derived value - needs to match the sets of paramters provided through ...}
 
-\item{name_fun}{a custom function used to construct the variable name for the derived quantity}
+\item{name_fun}{a custom function used to construct the variable name for the derived quantity - needs to match the sets of paramters provided through ...}
 
 \item{filter_new}{an expression to apply as a filter on the new data rows (e.g. plane == "all")}
 

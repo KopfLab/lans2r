@@ -10,7 +10,7 @@ calculate_sums(data, ..., quiet = F)
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
 
 \item{...}{the ion sums to calculate, each entry is for one sum of as many ions as desired,
-e.g. c("13C", "12C"), c("15N12C", "14C12C"), ...}
+e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...}
 
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }

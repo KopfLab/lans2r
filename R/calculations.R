@@ -2,18 +2,18 @@
 #' 
 #' This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. \link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
 #' 
-#' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}, can be grouped to do calculations within individual groups
-#' @param ... the columns to send to the value, error and naming function for each derived value, e.g. c("12C", "13C", "12C14N"), the number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c("12C", "12C sigma") would pass both the value and error of this variable to the value and error function.
+#' @param data a data frame with lans2r data, can be grouped to do calculations within individual groups
+#' @param ... the parameters to send to the value, error and naming function for each derived value. These are always expressions that can include references to variable columns, arithmetic and constants, e.g. c(`12C`, `13C`) or c("test", 100*(`12C`+`13C`)). The number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c(`12C`, `12C sigma`) would pass both the value and error of this variable to the functions.
 #' @param value_fun a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...
-#' @param error_fun a custom function used to calcluate the error (sigma) for the derived value
-#' @param name_fun a custom function used to construct the variable name for the derived quantity
+#' @param error_fun a custom function used to calcluate the error (sigma) for the derived value - needs to match the sets of paramters provided through ...
+#' @param name_fun a custom function used to construct the variable name for the derived quantity - needs to match the sets of paramters provided through ...
 #' @param filter_new an expression to apply as a filter on the new data rows (e.g. plane == "all")
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @return the original data frame with the sums information appended (data_type == "ion_sum")
 #' @export
 calculate <- function(data, data_type, ..., value_fun, 
                       error_fun = function(...) return(NA), 
-                      name_fun = function(...) return(paste(list(...), collapse = " ")),
+                      name_fun = default_name,
                       filter_new = NULL,
                       quiet = F) {
   
@@ -22,25 +22,40 @@ calculate <- function(data, data_type, ..., value_fun,
   if(is.null(data$value)) stop("'value' column does not exist")
   if(is.null(data$data_type)) stop("'data_type' column does not exist")
   
-  # checks
-  params <- list(...)
-  missing <- setdiff(params %>% unlist(), c(names(data), data$variable %>% unique(), data$variable %>% unique() %>% paste("sigma")))
-  if (length(missing) > 0) {
-    stop("some variables do not exist in this data set: ", missing %>% paste(collapse = ", ")) 
+  # default name function (concatenate the deparsed expression)
+  default_name <- function(...) {
+    lazy_dots(...) %>% 
+      sapply(function(lexp) deparse(lexp$exp), simplify = TRUE) %>% 
+      paste(collapse = " ")
   }
   
-  # generate function calls to make calculations
-  var_new <- sapply(params, function(i) do.call(name_fun, i %>% as.list()))
+  # generate parameter sets
+  param_exps <- lazy_dots(...)
+  params <- lapply(param_exps, function(lexp) {
+    strsplit(sub("^c\\((.+)\\)$", "\\1", deparse(lexp$expr)), ",\\s?")[[1]]
+  })
+  
+  # determine new variable names (calling the name_fun)
+  var_new <- sapply(params, function(ps) {
+    sprintf("f(%s)", paste(ps, collapse = ",")) %>%  # put together function call
+      lazyeval::as.lazy(parent.frame()) %>% # generate call
+      lazyeval::interp(f = name_fun) %>% # inject name function
+      lazy_eval() # evaluate
+  })
+  
+  # generate the value and error expressions
   val_fields <-
-    lapply(params, function(i) {
-      func_call <- sprintf("f(`%s`)", i %>% paste(collapse = "`,`"))
-      lazyeval::as.lazy(func_call, parent.frame()) %>% lazyeval::interp(f = value_fun)
+    lapply(params, function(ps) {
+      sprintf("f(%s)", paste(ps, collapse = ",")) %>%  # put together function call
+        lazyeval::as.lazy(parent.frame()) %>% # generate call
+        lazyeval::interp(f = value_fun) # inject value function
     }) %>% setNames(var_new)
   
   err_fields <-
-    lapply(params, function(i) {
-      func_call <- sprintf("f(`%s`)", i %>% paste(collapse = "`,`"))
-      lazyeval::as.lazy(func_call, parent.frame()) %>% lazyeval::interp(f = error_fun)
+    lapply(params, function(ps) {
+      sprintf("f(%s)", paste(ps, collapse = ",")) %>%  # put together function call
+        lazyeval::as.lazy(parent.frame()) %>% # generate call
+        lazyeval::interp(f = error_fun) # inject value function
     }) %>% setNames(var_new)
   
   # figure out what are the actual new variables (includes overriding old ones)
@@ -49,17 +64,7 @@ calculate <- function(data, data_type, ..., value_fun,
   var_new_select <- lapply(var_old, function(i) lazyeval::interp(~-var, var = as.name(i)))
   
   # spread data into wide format (relies on groups getting carried through the spread)
-  df <- 
-    suppressMessages(
-      left_join(
-        data %>% 
-          select(-sigma, -data_type) %>% 
-          tidyr::spread(variable, value),
-        data %>% 
-          mutate(variable = paste(variable, "sigma")) %>% 
-          select(-value, -data_type) %>% 
-          tidyr::spread(variable, sigma)
-      ))
+  df <- spread_data(data, values = TRUE, errors = TRUE)
   
   # just in case of grouping, make calculations with do
   new_data <- 
@@ -122,8 +127,6 @@ calculate <- function(data, data_type, ..., value_fun,
 }
 
 
-
-
 #' Calculate ion sums
 #' 
 #' This function calculates the ion sums and resulting counting
@@ -133,7 +136,7 @@ calculate <- function(data, data_type, ..., value_fun,
 #' 
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
 #' @param ... the ion sums to calculate, each entry is for one sum of as many ions as desired,
-#' e.g. c("13C", "12C"), c("15N12C", "14C12C"), ...
+#' e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @return the original data frame with the sums information appended (data_type == "ion_sum")
 #' @export
@@ -156,7 +159,11 @@ calculate_sums <- function(data, ..., quiet = F) {
     error_fun = function(...) {
       lans2r:::iso.errN(sum_vectors(...))
     },
-    name_fun = function(...) paste(list(...), collapse = "+"),
+    name_fun = function(...) {
+      lazy_dots(...) %>% 
+        sapply(function(lexp) deparse(lexp$exp), simplify = TRUE) %>% 
+        paste(collapse = "+")
+    },
     quiet = quiet
   )
 }
@@ -171,7 +178,7 @@ calculate_sums <- function(data, ..., quiet = F) {
 #' 
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
 #' @param ... the ratios to calculate, each entry is one ratio with major isotope first, then
-#' minor isotope, e.g. c("13C", "12C"), c("15N12C", "14C12C"), ...
+#' minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @note TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 #' @return the original data frame with the ratio information appended (all ratios have data_type == "ratio")
@@ -185,7 +192,7 @@ calculate_ratios <- function(data, ..., quiet = F) {
     ...,
     value_fun = function(m, M) lans2r:::iso.R(M, m),
     error_fun = function(m, M) lans2r:::iso.errR(M, m),
-    name_fun = function(m, M) paste0(m,"/",M),
+    name_fun = function(m, M) paste0(deparse(substitute(m)),"/",deparse(substitute(M))),
     quiet = quiet
   )
 }
@@ -200,7 +207,7 @@ calculate_ratios <- function(data, ..., quiet = F) {
 #' 
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
 #' @param ... the fractional abundances to calculate, each entry is for one fractional abundance with major isotope first, then
-#' minor isotope, e.g. c("13C", "12C"), c("15N12C", "14C12C"), ...
+#' minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @note TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 #' @return the original data frame with the fractional abundance information appended (all fractoinal abundances are in % and have data_type == "abundance")
@@ -214,7 +221,7 @@ calculate_abundances <- function(data, ..., quiet = F) {
     ...,
     value_fun = function(m, M) 100*lans2r:::iso.F(M, m),
     error_fun = function(m, M) 100*lans2r:::iso.errF(M, m),
-    name_fun = function(m, M) paste(m, "F"),
+    name_fun = function(m, M) paste(deparse(substitute(m)), "F"),
     quiet = quiet
   )
   

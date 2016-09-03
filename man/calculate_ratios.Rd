@@ -10,7 +10,7 @@ calculate_ratios(data, ..., quiet = F)
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
 
 \item{...}{the ratios to calculate, each entry is one ratio with major isotope first, then
-minor isotope, e.g. c("13C", "12C"), c("15N12C", "14C12C"), ...}
+minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...}
 
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }
