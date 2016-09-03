@@ -12,7 +12,6 @@
 #' @param color_scale what color scale to use for high and low intensity, default is black & white
 #' @export
 plot_maps <- function(data, draw_ROIs = T, normalize = T, color_scale = c("black", "white")) {
-  library(ggplot2)
   if (nrow(data) == 0)
     stop("no rows in data frame")
   

@@ -17,12 +17,13 @@ Depends:
     dplyr
 Imports:
     tidyr,
-    magrittr,
+    ggplot2,
     lazyeval,
-    reshape2,
     R.matlab
 Suggests:
-    ggplot2
+    testthat,
+    rmarkdown,
+    knitr
 Collate:
     'calculations.R'
     'isotope_math.R'

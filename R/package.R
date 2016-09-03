@@ -15,4 +15,5 @@
 #' @include read_hmr_files.R
 #' @include plotting.R
 #' @importFrom lazyeval lazy lazy_dots lazy_eval interp
+#' @import ggplot2
 NULL
