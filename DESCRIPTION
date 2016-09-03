@@ -29,6 +29,7 @@ Collate:
     'load_data.R'
     'plotting.R'
     'read_hmr_files.R'
+    'transformations.R'
     'read_data_files.R'
     'package.R'
 RoxygenNote: 5.0.1

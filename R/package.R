@@ -10,6 +10,7 @@
 #' @include isotope_math.R
 #' @include read_data_files.R
 #' @include load_data.R
+#' @include transformations.R
 #' @include calculations.R
 #' @include read_hmr_files.R
 #' @include plotting.R
