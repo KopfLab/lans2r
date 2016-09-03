@@ -140,7 +140,7 @@ calculate <- function(data, data_type, ..., value_fun,
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @return the original data frame with the sums information appended (data_type == "ion_sum")
 #' @export
-calculate_sums <- function(data, ..., quiet = F) {
+calculate_sums <- function(data, ..., name_fun = default_name, quiet = F) {
   
   # function to sum up arbitrary number of vectors by entry
   sum_vectors <- 
@@ -149,6 +149,13 @@ calculate_sums <- function(data, ..., quiet = F) {
       for(i in list(...)[-1]) r <- r+i
       return(r)
     }
+  
+  # default sums name
+  default_name <- function(...) {
+    lazy_dots(...) %>% 
+      sapply(function(lexp) deparse(lexp$exp), simplify = TRUE) %>% 
+      paste(collapse = "+")
+  }
   
   # calculate sums
   calculate(
@@ -159,11 +166,7 @@ calculate_sums <- function(data, ..., quiet = F) {
     error_fun = function(...) {
       lans2r:::iso.errN(sum_vectors(...))
     },
-    name_fun = function(...) {
-      lazy_dots(...) %>% 
-        sapply(function(lexp) deparse(lexp$exp), simplify = TRUE) %>% 
-        paste(collapse = "+")
-    },
+    name_fun = name_fun,
     quiet = quiet
   )
 }
@@ -183,7 +186,10 @@ calculate_sums <- function(data, ..., quiet = F) {
 #' @note TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 #' @return the original data frame with the ratio information appended (all ratios have data_type == "ratio")
 #' @export
-calculate_ratios <- function(data, ..., quiet = F) {
+calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
+  
+  # default name fun
+  default_name <- function(m, M) paste0(deparse(substitute(m)),"/",deparse(substitute(M)))
   
   # calculate ratios
   calculate(
@@ -192,7 +198,7 @@ calculate_ratios <- function(data, ..., quiet = F) {
     ...,
     value_fun = function(m, M) lans2r:::iso.R(M, m),
     error_fun = function(m, M) lans2r:::iso.errR(M, m),
-    name_fun = function(m, M) paste0(deparse(substitute(m)),"/",deparse(substitute(M))),
+    name_fun = name_fun,
     quiet = quiet
   )
 }
@@ -212,7 +218,10 @@ calculate_ratios <- function(data, ..., quiet = F) {
 #' @note TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 #' @return the original data frame with the fractional abundance information appended (all fractoinal abundances are in % and have data_type == "abundance")
 #' @export
-calculate_abundances <- function(data, ..., quiet = F) {
+calculate_abundances <- function(data, ..., name_fun = default_name, quiet = F) {
+  
+  # default name fun
+  default_name = function(m, M) paste(deparse(substitute(m)), "F")
   
   # calculate ratios
   calculate(
@@ -221,7 +230,7 @@ calculate_abundances <- function(data, ..., quiet = F) {
     ...,
     value_fun = function(m, M) lans2r:::iso.F(M, m),
     error_fun = function(m, M) lans2r:::iso.errF(M, m),
-    name_fun = function(m, M) paste(deparse(substitute(m)), "F"),
+    name_fun = name_fun,
     quiet = quiet
   )
   
