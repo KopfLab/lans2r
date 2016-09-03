@@ -219,8 +219,8 @@ calculate_abundances <- function(data, ..., quiet = F) {
     data,
     data_type = "abundance",
     ...,
-    value_fun = function(m, M) 100*lans2r:::iso.F(M, m),
-    error_fun = function(m, M) 100*lans2r:::iso.errF(M, m),
+    value_fun = function(m, M) lans2r:::iso.F(M, m),
+    error_fun = function(m, M) lans2r:::iso.errF(M, m),
     name_fun = function(m, M) paste(deparse(substitute(m)), "F"),
     quiet = quiet
   )

@@ -51,17 +51,17 @@ For additional operations, one can use the more generic `calculate` function and
 
 ```{r}
 data <- data %>% 
-  mutate(F13C_natural = 1.11, F15N_natural = 0.366) %>% 
+  mutate(F13C_natural = 1.11/100, F15N_natural = 0.366/100) %>% 
   calculate(
     data_type = "APE",
     c(`13C F`, `F13C_natural`, `13C F sigma`), 
     c(`15N12C F`, `F15N_natural`, `15N12C F sigma`),
     # calculate the APE value as the fractional abundance enrichment above natural
-    value_fun = function(val, nat, sigma) (val - nat),
+    value_fun = function(val, nat, sigma) 100*(val - nat),
     # assume the error in natural abundance is negligible so only F error propagates
-    error_fun = function(val, nat, sigma) sigma,
+    error_fun = function(val, nat, sigma) 100*sigma,
     # replace the F in the existing columnes with APE to make the new variable
-    name_fun = function(val, ...) sub("F", "APE", deparse(substitute(val)))
+    name_fun = function(val, ...) sub("F", "APE [%]", deparse(substitute(val)))
   )
 ```
 
@@ -81,10 +81,11 @@ Since this is now in long format so it's easy to have both `value` and the `sigm
 data %>% spread_data() %>% head(n=10) %>% kable()
 ```
 
-Or for more specific overviews, for example, only the data errors (excluding the values) and only the first plane of the first few ROIs
+Or for more specific overviews, for example, only the abundance and APE, only the data values (excluding the errors) and only the first plane of the first few ROIs
 
 ```{r}
-data %>% filter(plane == "1", ROI < 4) %>% spread_data(values = FALSE) %>% kable()
+data %>% filter(data_type %in% c("abundance", "APE"), plane == "1", ROI < 4) %>% 
+  spread_data(errors = FALSE) %>% kable()
 ```
 
 #### Plotting
