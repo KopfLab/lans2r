@@ -25,14 +25,14 @@ calculate <- function(data, data_type, ..., value_fun,
   # default name function (concatenate the deparsed expression)
   default_name <- function(...) {
     lazy_dots(...) %>% 
-      sapply(function(lexp) deparse(lexp$exp), simplify = TRUE) %>% 
+      sapply(function(lexp) deparse(lexp$exp, width.cutoff = 200L), simplify = TRUE) %>% 
       paste(collapse = " ")
   }
   
   # generate parameter sets
   param_exps <- lazy_dots(...)
   params <- lapply(param_exps, function(lexp) {
-    strsplit(sub("^c\\((.+)\\)$", "\\1", deparse(lexp$expr)), ",\\s?")[[1]]
+    strsplit(sub("^c\\((.+)\\)$", "\\1", deparse(lexp$expr,  width.cutoff = 200L)), ",\\s?")[[1]]
   })
   
   # determine new variable names (calling the name_fun)
