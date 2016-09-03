@@ -18,4 +18,4 @@ devtools::install_github('sebkopf/lans2r')
 
 ## Example
 
-For instructions on how to use this package, please **[check out the example](https://github.com/sebkopf/lans2r/raw/master/inst/doc/example.Rmd)** and the resulting [HTML output](https://rawgit.com/sebkopf/lans2r/master/inst/doc/example.html).
+For instructions on how to use this package, please **[check out the example](https://github.com/sebkopf/lans2r/raw/master/vignettes/example.Rmd)** and the resulting [HTML output](https://rawgit.com/sebkopf/lans2r/master/inst/doc/example.html).
