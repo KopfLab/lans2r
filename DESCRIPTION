@@ -1,18 +1,18 @@
 Package: lans2r
 Type: Package
 Title: Work with Look at NanoSIMS data in R
-Version: 0.2.4
-Date: 2016-08-30
+Version: 0.3
+Date: 2016-11-12
 Author: Sebastian Kopf
-Maintainer: Sebastian Kopf <seb.kopf@gmail.com>
+Maintainer: Sebastian Kopf <sebastian.kopf@colorado.edu>
 Description: R interface for working with NanoSIMS ROI data defined in Look at
     NanoSIMS
 License: GPL-3
 LazyLoad: yes
 Roxygen: list(wrap = FALSE)
 VignetteBuilder: knitr
-URL: https://github.com/sebkopf/lans2r
-BugReports: https://github.com/sebkopf/lans2r/issues
+URL: https://github.com/KopfLab/lans2r
+BugReports: https://github.com/KopfLab/lans2r/issues
 Depends:
     dplyr
 Imports:

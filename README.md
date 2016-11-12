@@ -13,9 +13,9 @@ Reference: Polerecky L., Adam B., Milucka J., Musat N., Vagner T. and Kuypers M.
 
 ```{r, eval=FALSE}
 install.packages("devtools")
-devtools::install_github('sebkopf/lans2r')
+devtools::install_github('KopfLab/lans2r')
 ```
 
 ## Example
 
-For instructions on how to use this package, please **[check out the example](https://github.com/sebkopf/lans2r/raw/master/vignettes/example.Rmd)** and the resulting [HTML output](https://rawgit.com/sebkopf/lans2r/master/inst/doc/example.html).
+For instructions on how to use this package, please **[check out the example](https://github.com/KopfLab/lans2r/raw/master/vignettes/example.Rmd)** and the resulting [HTML output](https://rawgit.com/KopfLab/lans2r/master/inst/doc/example.html).
