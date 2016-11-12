@@ -17,14 +17,14 @@ You can install this package directly from [GitHub](https://github.com/sebkopf/l
 
 ```{r, eval=FALSE}
 install.packages("devtools")
-devtools::install_github('sebkopf/lans2r')
+devtools::install_github('KopfLab/lans2r')
 ```
 
 ## Load data
 
 To load data into R, export it from LANS which creates a folder for each analysis with sub folders **dat** containing the aggregated information about the different ROIs (in text file format) and **mat** containing the raw ion maps (in Matlab file format). Both of these can be imported easily with this package. For easier demonstration **lans2r** bundles a set of 3 analyses (folders `analysis1`, `analysis2` and `analysis3`) with the package sources.
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(lans2r)
 folder <- system.file("extdata", "nanosims_data", package = "lans2r") # data base directory
 ```
@@ -49,8 +49,8 @@ To calculate ratios and abundances, simply specificy which ions you would like t
 ```{r}
 data <- data %>% 
   calculate_sums(c(`13C`, `12C`), c(`15N12C`, `14N12C`)) %>% 
-  calculate_ratios(c(`13C`, `12C`), c(`15N12C`, `14N12C`), c(`13C+12C`, `15N12C+14N12C`)) %>% # calculate ratios
-  calculate_abundances(c(`13C`, `12C`), c(`15N12C`, `14N12C`)) # calculate abundances
+  calculate_ratios(c(`13C`, `12C`), c(`15N12C`, `14N12C`), c(`13C+12C`, `15N12C+14N12C`)) %>% 
+  calculate_abundances(c(`13C`, `12C`), c(`15N12C`, `14N12C`)) 
 ```
 
 For additional operations, one can use the more generic `calculate` function and provide custom functions for value and error calculations and name construction. Here, we have APE (atom percent enrichment) as an example.
@@ -76,9 +76,8 @@ data <- data %>%
 
 Let's take a look at the first couple of rows of the data frame.
 
-```{r}
-library(knitr)
-data %>% head(n=10) %>% kable()
+```{r, warning=FALSE}
+data %>% head(n=10) %>% knitr::kable()
 ```
 
 Since this is now in long format so it's easy to have both `value` and the `sigma` error, it's hard to see line by line what is going on, let's look just at `analysis1` and recast the values into a wide format using the `spread_data` function.
