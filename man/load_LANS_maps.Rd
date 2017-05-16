@@ -25,4 +25,3 @@ format and good error propagation.}
 Load the full ion map data (incl. ROI locations) exported from LANS analyses and attach additional information to each analysis. 
 Uses \link{read_map_data} to read individual matlab export files.
 }
-

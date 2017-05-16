@@ -4,7 +4,7 @@
 \alias{calculate_abundances}
 \title{Calculate istope fractional abundances}
 \usage{
-calculate_abundances(data, ..., quiet = F)
+calculate_abundances(data, ..., name_fun = default_name, quiet = F)
 }
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
@@ -26,4 +26,3 @@ from many analyses.
 \note{
 TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 }
-

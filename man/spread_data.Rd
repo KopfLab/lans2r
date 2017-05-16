@@ -19,4 +19,3 @@ the original data frame but in wide format
 \description{
 This function allows easy spreading into wide format.
 }
-

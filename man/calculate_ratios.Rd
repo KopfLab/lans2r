@@ -4,7 +4,7 @@
 \alias{calculate_ratios}
 \title{Calculate isotope ratios}
 \usage{
-calculate_ratios(data, ..., quiet = F)
+calculate_ratios(data, ..., name_fun = default_name, quiet = F)
 }
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
@@ -27,4 +27,3 @@ to calculate elemental ratios (careful, ionization efficiencies skew their scali
 \note{
 TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 }
-

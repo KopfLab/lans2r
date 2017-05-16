@@ -22,4 +22,3 @@ for clarity as well. Note that this does not currently support any smoothing yet
 ratios or abundances will most likely not work well because individual pixels have extreme
 values.
 }
-

@@ -29,4 +29,3 @@ they can be loaded as well (and are by default). The resulting data frame
 has a 'plane' column that keeps track of the plane, the value 'all' identifies
 the combined data for the ROI from all planes.
 }
-

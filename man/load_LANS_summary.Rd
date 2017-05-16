@@ -29,4 +29,3 @@ during "Display masses")}
 Load the ROI summary information exported from LANS analyses and attach additional information to each analysis. 
 Uses \link{read_roi_data} to read individual files.
 }
-

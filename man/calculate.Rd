@@ -28,4 +28,3 @@ the original data frame with the sums information appended (data_type == "ion_su
 \description{
 This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. \link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
 }
-

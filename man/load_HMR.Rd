@@ -19,4 +19,3 @@ Read data from HMR txt files
 \note{
 TODO: this needs  little more documentation and an example Rmd
 }
-

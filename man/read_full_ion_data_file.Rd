@@ -9,4 +9,3 @@ read_full_ion_data_file(file)
 \description{
 Read a full ion data (.mat) file
 }
-

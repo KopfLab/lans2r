@@ -4,7 +4,7 @@
 \alias{calculate_sums}
 \title{Calculate ion sums}
 \usage{
-calculate_sums(data, ..., quiet = F)
+calculate_sums(data, ..., name_fun = default_name, quiet = F)
 }
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
@@ -23,4 +23,3 @@ statistics error from multiple raw ion counts. It can be applied to data from bo
 LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 from many analyses.
 }
-
