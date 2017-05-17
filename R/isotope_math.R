@@ -1,5 +1,9 @@
-## Functions for errors from counting statistic =======================
-
+# Functions for errors from counting statistic 
+# These are currently not exported, just used for internal calculations.
+# 
+# @param NM is the major isotope
+# @param Nm is the minor isotope
+# 
 # - error in measured ion counts:
 #   - absolute: $\sqrt{N}$
 #   - relative: $\frac{\sqrt{N}}{N} = \frac{1}{\sqrt{N}}$
@@ -18,9 +22,7 @@ iso.errN <- function(N) sqrt(N)
 
 iso.R <- function(NM, Nm) Nm/NM
 iso.relErrR <- function(NM, Nm) sqrt(1/NM + 1/Nm)
-iso.relErrR2<-function(NM, R) sqrt(1/NM * (1 + R)/R)
 iso.errR <- function(NM, Nm) Nm/NM * iso.relErrR(NM, Nm)
-iso.errR2 <- function(NM, R) R * iso.relErrR2(NM, R)
 
 iso.F <- function(NM, Nm) Nm/(NM + Nm)
 iso.relErrF <- function(NM, Nm) (1 - iso.F(NM, Nm)) * sqrt(1/NM + 1/Nm)
