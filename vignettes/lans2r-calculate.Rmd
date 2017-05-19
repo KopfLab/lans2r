@@ -80,7 +80,7 @@ kable(derived_data2, d = 2)
 
 #### Calculate derived quantity (no error, and direct naming)
 
-To calculate a derived quantity without calculating errors, simply don't supply an error function. Also illustrated here is a simple way to provide specific variable names and defining the functions in line.
+To calculate a derived quantity without calculating errors, simply don't supply an error function. Also illustrated here is a simple way to provide specific variable names and defining the functions in line. Note the use of `sum(x)` as well, this can easily be used for calculating normalized derived quantities.
 
 ```{r}
 derived_data3 <-
@@ -91,7 +91,7 @@ derived_data3 <-
     # which sets of variables to use for calculations
     c("my_var", A, B, C),
     # the function to make the calculations
-    value_fun = function(name, x, y, z) x+y^2+z^3,
+    value_fun = function(name, x, y, z) x+y^2+z^3/sum(x),
     name_fun = function(name, x, y, z) name)
 kable(derived_data3, d = 2)
 ```
