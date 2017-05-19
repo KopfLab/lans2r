@@ -1,15 +1,18 @@
 #' Calculate derived data
 #' 
-#' This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. \link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
+#' This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. 
+#' \link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
 #' 
 #' @param data a data frame with lans2r data, can be grouped to do calculations within individual groups
+#' @param data_type what to call the new data type
 #' @param ... the parameters to send to the value, error and naming function for each derived value. These are always expressions that can include references to variable columns, arithmetic and constants, e.g. c(`12C`, `13C`) or c("test", 100*(`12C`+`13C`)). The number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c(`12C`, `12C sigma`) would pass both the value and error of this variable to the functions.
 #' @param value_fun a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...
 #' @param error_fun a custom function used to calcluate the error (sigma) for the derived value - needs to match the sets of paramters provided through ...
 #' @param name_fun a custom function used to construct the variable name for the derived quantity - needs to match the sets of paramters provided through ...
 #' @param filter_new an expression to apply as a filter on the new data rows (e.g. plane == "all")
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
-#' @return the original data frame with the sums information appended (data_type == "ion_sum")
+#' @return the original data frame with the newly calculated information appended (data_type == "ion_sum")
+#' @family calculations
 #' @export
 calculate <- function(data, data_type, ..., value_fun, 
                       error_fun = function(...) return(NA), 
@@ -18,9 +21,7 @@ calculate <- function(data, data_type, ..., value_fun,
                       quiet = F) {
   
   # checks
-  if(is.null(data$variable)) stop("'variable' column does not exist")
-  if(is.null(data$value)) stop("'value' column does not exist")
-  if(is.null(data$data_type)) stop("'data_type' column does not exist")
+  sapply(c("variable", "value", "data_type"), col_check, data, sys.call())
   
   # default name function (concatenate the deparsed expression)
   default_name <- function(...) {
@@ -115,7 +116,7 @@ calculate <- function(data, data_type, ..., value_fun,
       new_data_add %>% 
         group_by(variable) %>% tally() %>%
         mutate(label = paste0("'", variable, "' (", n, "x)")) %>% 
-        magrittr::extract2("label") %>% paste(collapse = ", ")
+        { .$label } %>% paste(collapse = ", ")
     ) %>% message()
   }
   
@@ -137,8 +138,10 @@ calculate <- function(data, data_type, ..., value_fun,
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
 #' @param ... the ion sums to calculate, each entry is for one sum of as many ions as desired,
 #' e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
+#' @param name_fun the naming function, receives ... from the top level, default concatenates column names with '+'
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @return the original data frame with the sums information appended (data_type == "ion_sum")
+#' @family calculations
 #' @export
 calculate_sums <- function(data, ..., name_fun = default_name, quiet = F) {
   
@@ -164,7 +167,7 @@ calculate_sums <- function(data, ..., name_fun = default_name, quiet = F) {
     ...,
     value_fun = sum_vectors,
     error_fun = function(...) {
-      lans2r:::iso.errN(sum_vectors(...))
+      iso.errN(sum_vectors(...))
     },
     name_fun = name_fun,
     quiet = quiet
@@ -182,9 +185,10 @@ calculate_sums <- function(data, ..., name_fun = default_name, quiet = F) {
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
 #' @param ... the ratios to calculate, each entry is one ratio with major isotope first, then
 #' minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
+#' @param name_fun the naming function, receives ... from the top level, default concatenates column names with '/'
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
-#' @note TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 #' @return the original data frame with the ratio information appended (all ratios have data_type == "ratio")
+#' @family calculations
 #' @export
 calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
   
@@ -196,8 +200,8 @@ calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
     data,
     data_type = "ratio",
     ...,
-    value_fun = function(m, M) lans2r:::iso.R(M, m),
-    error_fun = function(m, M) lans2r:::iso.errR(M, m),
+    value_fun = function(m, M) iso.R(M, m),
+    error_fun = function(m, M) iso.errR(M, m),
     name_fun = name_fun,
     quiet = quiet
   )
@@ -214,9 +218,10 @@ calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
 #' @param ... the fractional abundances to calculate, each entry is for one fractional abundance with major isotope first, then
 #' minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
+#' @param name_fun the naming function, receives ... from the top level, default concatenates 'F' + minor ion name
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
-#' @note TODO: see if can improve performance by avoiding the call to spread and use joins instead.
 #' @return the original data frame with the fractional abundance information appended (all fractoinal abundances are in % and have data_type == "abundance")
+#' @family calculations
 #' @export
 calculate_abundances <- function(data, ..., name_fun = default_name, quiet = F) {
   
@@ -228,8 +233,8 @@ calculate_abundances <- function(data, ..., name_fun = default_name, quiet = F) 
     data,
     data_type = "abundance",
     ...,
-    value_fun = function(m, M) lans2r:::iso.F(M, m),
-    error_fun = function(m, M) lans2r:::iso.errF(M, m),
+    value_fun = function(m, M) iso.F(M, m),
+    error_fun = function(m, M) iso.errF(M, m),
     name_fun = name_fun,
     quiet = quiet
   )

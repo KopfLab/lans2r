@@ -181,7 +181,8 @@ read_full_ion_data_file <- function (file) {
   rois <- mat$CELLS %>% reshape2::melt() %>% 
     as_data_frame() %>% rename (ROI = value)
   mat$IM %>% 
-    reshape2::melt() %>% as_data_frame() %>%
+    # melt is significnatly faster than gather for this kind of matrix calculation
+    reshape2::melt() %>% as_data_frame() %>% 
     left_join(rois, by = c("Var1", "Var2")) %>% 
     mutate(
       variable = ion,

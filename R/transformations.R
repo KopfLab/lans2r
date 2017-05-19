@@ -9,10 +9,7 @@
 #' @export
 spread_data <- function(data, values = TRUE, errors = TRUE) {
   # checks
-  if(is.null(data$variable)) stop("'variable' column does not exist")
-  if(is.null(data$value)) stop("'value' column does not exist")
-  if(is.null(data$sigma)) stop("'value' column does not exist")
-  if(is.null(data$data_type)) stop("'data_type' column does not exist")
+  sapply(c("variable", "value", "sigma", "data_type"), col_check, data, sys.call())
   
   # spread data into wide format
   if (values)

@@ -24,7 +24,7 @@ test_that("shot noise error on isotope ratios is calcualted correctly", {
 
 test_that("shot noise error on isotope fractional abundances is calculated correctly", {
   expect_equal(lans2r:::iso.relErrF(90, 10), (1-10/(90+10)) * sqrt(1/90 + 1/10))
-  expect_equal(lans2r:::iso.errF(90, 10), lans2r::iso.F(90, 10) * lans2r:::iso.relErrF(90, 10))
+  expect_equal(lans2r:::iso.errF(90, 10), lans2r:::iso.F(90, 10) * lans2r:::iso.relErrF(90, 10))
 })
 
 test_that("shot noise error on delta values is calculated correctly", {
