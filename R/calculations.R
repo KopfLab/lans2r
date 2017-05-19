@@ -133,7 +133,10 @@ calculate <- function(data, data_type, ..., value_fun,
 #' This function calculates the ion sums and resulting counting
 #' statistics error from multiple raw ion counts. It can be applied to data from both
 #' LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
-#' from many analyses.
+#' from many analyses. Careful about its error propagation, it assumes it is calculating
+#' sums of ions and uses the ion counts themselves for error calculation. This is not 
+#' suitable for calculating other types of sums where other types of error propagation
+#' may be more approriate.
 #' 
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}
 #' @param ... the ion sums to calculate, each entry is for one sum of as many ions as desired,

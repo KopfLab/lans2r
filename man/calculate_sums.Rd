@@ -23,7 +23,10 @@ the original data frame with the sums information appended (data_type == "ion_su
 This function calculates the ion sums and resulting counting
 statistics error from multiple raw ion counts. It can be applied to data from both
 LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
-from many analyses.
+from many analyses. Careful about its error propagation, it assumes it is calculating
+sums of ions and uses the ion counts themselves for error calculation. This is not 
+suitable for calculating other types of sums where other types of error propagation
+may be more approriate.
 }
 \seealso{
 Other calculations: \code{\link{calculate_abundances}},
