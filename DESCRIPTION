@@ -1,7 +1,8 @@
 Package: lans2r
 Title: Work with Look at NanoSIMS data in R
 Description: R interface for working with NanoSIMS ROI data defined in Look at
-    NanoSIMS. To get started, take alook at the vignette.
+    NanoSIMS. 
+    To get started, take a look at the example vignette: \code{vignette("example", package = "lans2r")}.
 Version: 0.3.1
 Author: Sebastian Kopf
 Maintainer: Sebastian Kopf <sebastian.kopf@colorado.edu>
@@ -19,7 +20,7 @@ Suggests:
     testthat,
     rmarkdown,
     knitr
-License: GPL 3 | file LICENSE
+License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
