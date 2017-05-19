@@ -12,6 +12,8 @@ calculate_sums(data, ..., name_fun = default_name, quiet = F)
 \item{...}{the ion sums to calculate, each entry is for one sum of as many ions as desired,
 e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...}
 
+\item{name_fun}{the naming function, receives ... from the top level, default concatenates column names with '+'}
+
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }
 \value{
@@ -22,4 +24,8 @@ This function calculates the ion sums and resulting counting
 statistics error from multiple raw ion counts. It can be applied to data from both
 LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 from many analyses.
+}
+\seealso{
+Other calculations: \code{\link{calculate_abundances}},
+  \code{\link{calculate_ratios}}, \code{\link{calculate}}
 }

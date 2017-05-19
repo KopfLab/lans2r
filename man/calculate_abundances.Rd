@@ -12,6 +12,8 @@ calculate_abundances(data, ..., name_fun = default_name, quiet = F)
 \item{...}{the fractional abundances to calculate, each entry is for one fractional abundance with major isotope first, then
 minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...}
 
+\item{name_fun}{the naming function, receives ... from the top level, default concatenates 'F' + minor ion name}
+
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }
 \value{
@@ -23,6 +25,7 @@ statistics error from the raw ion counts. It can be applied to data from both
 LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 from many analyses.
 }
-\note{
-TODO: see if can improve performance by avoiding the call to spread and use joins instead.
+\seealso{
+Other calculations: \code{\link{calculate_ratios}},
+  \code{\link{calculate_sums}}, \code{\link{calculate}}
 }

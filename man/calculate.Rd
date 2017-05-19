@@ -10,6 +10,8 @@ calculate(data, data_type, ..., value_fun, error_fun = function(...)
 \arguments{
 \item{data}{a data frame with lans2r data, can be grouped to do calculations within individual groups}
 
+\item{data_type}{what to call the new data type}
+
 \item{...}{the parameters to send to the value, error and naming function for each derived value. These are always expressions that can include references to variable columns, arithmetic and constants, e.g. c(`12C`, `13C`) or c("test", 100*(`12C`+`13C`)). The number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c(`12C`, `12C sigma`) would pass both the value and error of this variable to the functions.}
 
 \item{value_fun}{a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...}
@@ -23,8 +25,14 @@ calculate(data, data_type, ..., value_fun, error_fun = function(...)
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }
 \value{
-the original data frame with the sums information appended (data_type == "ion_sum")
+the original data frame with the newly calculated information appended (data_type == "ion_sum")
 }
 \description{
-This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. \link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
+This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. 
+\link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
+}
+\seealso{
+Other calculations: \code{\link{calculate_abundances}},
+  \code{\link{calculate_ratios}},
+  \code{\link{calculate_sums}}
 }

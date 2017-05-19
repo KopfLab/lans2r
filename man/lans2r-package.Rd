@@ -7,7 +7,8 @@
 \title{lans2r: Work with Look at NanoSIMS data in R}
 \description{
 R interface for working with NanoSIMS ROI data defined in Look at
-NanoSIMS. To get started, take alook at the vignette.
+NanoSIMS.
+To get started, take a look at the example vignette: \code{vignette("example", package = "lans2r")}.
 }
 \seealso{
 Useful links:
