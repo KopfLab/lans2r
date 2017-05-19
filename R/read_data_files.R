@@ -13,14 +13,14 @@
 #'
 #' @param dat_folder - the LANS dat directory with the ions' .dac files
 #' @param ion_data_only - by default TRUE, i.e. ignores all non-ion data files
-#' @param load_zstack - whether to load any z_stacks found, by default TRUE
+#' @param load_zstacks - whether to load any z_stacks found, by default TRUE
 #' @param quiet - whether to report information on the loaded data or not
 #' @return concatenated data_frame with all the ROIs' data, with identifier columns 'plane', 'ROI' and 'variable'
 #' @export
 read_roi_data <- function(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE, quiet = F) {
   # checks
   if (!dir.exists(dat_folder))
-    stop("directory does not exist: ", dat_folder)
+    stop("directory does not exist: ", dat_folder, call. =FALSE)
   
   # pattern
   if (ion_data_only) {
@@ -68,7 +68,7 @@ read_roi_data <- function(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE,
   bind_rows(roi_data, zstack_data) %>% return()
 }
 
-#' Read an ion data (.dac) file
+# Read an ion data (.dac) file
 read_roi_ion_data_file <- function (file) {
   stopifnot(file.exists(file))
   ion <- sub("^(.+)\\.dac$", "\\1", basename(file))
@@ -82,29 +82,34 @@ read_roi_ion_data_file <- function (file) {
   }
   
   data %>% 
-    mutate(
-      plane = "all", 
-      data_type = "ion_count",
-      variable = ion,
-      sigma = iso.errN(MEANi) ) %>% # recalculating it to be more precise
-    select(
-      plane, ROI = `# i`, 
-      data_type, variable,
-      value = MEANi, 
-      sigma, 
-      coord_x = Xi, coord_y = Yi, 
-      size = SIZEi, pixels = PIXELSi, 
-      LW_ratio = LWratio)
+    mutate_(
+      .dots = list(
+        plane = as.lazy(~"all"), 
+        data_type = as.lazy(~"ion_count"),
+        variable = as.lazy(~ion),
+        sigma = as.lazy(~iso.errN(MEANi)) 
+      )) %>% # recalculating it to be more precise
+    select_(
+      .dots = list(
+        "plane", ROI = "`# i`", 
+        "data_type", "variable",
+        value = "MEANi", 
+        "sigma", 
+        coord_x = "Xi", coord_y = "Yi", 
+        size = "SIZEi", pixels = "PIXELSi", 
+        LW_ratio = "LWratio"
+      )) %>% as_data_frame()
 }
 
 
-#' Read an ion data (.dac) file
+# Read an ion data (.dac) file
 read_roi_ion_zstack_data_file <- function (file) {
   stopifnot(file.exists(file))
+  V1 <- NULL # global variable definition
   ion <- sub("^([0-9A-Z]+)\\-z.dat$", "\\1", basename(file))
   read.table(file, header = F, skip = 3, comment.char = "", sep = "\t") %>%
     tidyr::gather(var, value, -V1) %>% 
-    rename(plane = V1) %>% 
+    rename_(.dots = list(plane = "V1")) %>% 
     group_by(plane) %>% 
     mutate(
       data_type = "ion_count",
@@ -139,7 +144,7 @@ read_roi_ion_zstack_data_file <- function (file) {
 read_map_data <- function(mat_folder, ion_data_only = TRUE, quiet = F) {
   # checks
   if (!dir.exists(mat_folder))
-    stop("directory does not exist: ", mat_folder)
+    stop("directory does not exist: ", mat_folder, call.=FALSE)
   
   # pattern
   if (ion_data_only) {
@@ -173,7 +178,7 @@ read_map_data <- function(mat_folder, ion_data_only = TRUE, quiet = F) {
   ion_map_data %>% return()
 }
 
-#' Read a full ion data (.mat) file
+# Read a full ion data (.mat) file
 read_full_ion_data_file <- function (file) {
   stopifnot(file.exists(file))
   ion <- sub("^(.+)\\.mat$", "\\1", basename(file))
@@ -184,17 +189,23 @@ read_full_ion_data_file <- function (file) {
     # melt is significnatly faster than gather for this kind of matrix calculation
     reshape2::melt() %>% as_data_frame() %>% 
     left_join(rois, by = c("Var1", "Var2")) %>% 
-    mutate(
-      variable = ion,
-      data_type = "ion_count", 
-      sigma = iso.errN(value),
-      x.px = Var2,
-      y.px = max(Var1) - Var1 + 1,
-      frame_size.px = max(x.px),
-      frame_size.um = mat$xyscale[1,1],
-      x.um = x.px/frame_size.px * frame_size.um,
-      y.um = y.px/frame_size.px * frame_size.um) %>% 
-    select(x.px, y.px, frame_size.px, x.um, y.um, frame_size.um, variable, data_type, value, sigma, ROI) %>% 
-    arrange(x.px, y.px)
+    mutate_(
+      .dots = 
+        list(
+          variable = as.lazy(~ion),
+          data_type = as.lazy(~"ion_count"), 
+          sigma = as.lazy(~iso.errN(value)),
+          x.px = as.lazy(~Var2),
+          y.px = as.lazy(~max(Var1) - Var1 + 1),
+          frame_size.px = as.lazy(~max(x.px)),
+          frame_size.um = mat$xyscale[1,1],
+          x.um = as.lazy(~x.px/frame_size.px * frame_size.um),
+          y.um = as.lazy(~y.px/frame_size.px * frame_size.um)
+        )
+    ) %>% 
+    select_(.dots = c("x.px", "y.px", "frame_size.px", "x.um", "y.um", 
+                      "frame_size.um", "variable", "data_type", "value", 
+                      "sigma", "ROI")) %>% 
+    arrange_(.dots = c("x.px", "y.px"))
 }
 
