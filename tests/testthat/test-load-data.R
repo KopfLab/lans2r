@@ -54,10 +54,46 @@ test_that("it is possible to load multiple LANS summaries", {
                c("analysis1", "all", "1", "ion_count", "12C", "1895850", "1376.89868908355", 
                  "17.38", "192.93", "0.83", "353", "2.45"))
   
+  # additional information
+  expect_silent(
+    data <- load_LANS_summary (analysis = c("analysis1", "analysis2", "analysis3"), 
+                               information = c("run1", "run2", "run3"),
+                               date = as.Date(c("2015-01-01", "2016-02-25", "2017-03-04")),
+                               base_dir = folder, load_zstacks = FALSE, quiet = T))
+  
+  expect_equal(
+    data %>% select(analysis, information, date) %>% unique(),
+    structure(
+      list(analysis = c("analysis1", "analysis2", "analysis3"), 
+           information = c("run1", "run2", "run3"), 
+           date = structure(c(16436, 16856, 17229), class = "Date")), 
+      .Names = c("analysis", "information", "date"), 
+      row.names = c(NA, -3L), 
+      class = c("tbl_df", "tbl", "data.frame"))
+  )
+  
 })
 
 test_that("it is possible to load LANS maps", {
   
+  expect_true(file.exists(folder <- system.file("extdata", "nanosims_data", package = "lans2r")))
+  
+  expect_silent(maps <- load_LANS_maps (analysis = c("analysis1", "analysis2", "analysis3"), 
+                                        base_dir = folder, quiet = T))
+  
+  # check data
+  expect_equal(maps %>% select(analysis, frame_size.px, variable) %>% unique() %>% 
+                 group_by(analysis) %>% summarize(n = frame_size.px[1]^2 * length(variable)) %>% 
+                 summarize(all = sum(n)) %>% {.$all},
+               nrow(maps))
+  
+  expect_equal(maps$variable %>% unique(), c("12C", "13C", "14N12C", "15N12C"))
+  expect_equal(maps %>% names(), 
+               c("analysis", "x.px", "y.px", "frame_size.px", "x.um", "y.um", 
+                 "frame_size.um", "variable", "data_type", "value", "sigma", "ROI"))
+  expect_equal(maps %>% {.[1,]} %>% as.character(), 
+               c("analysis1", "1", "1", "256", "0.0391171875", "0.0391171875", 
+                 "10.014", "12C", "ion_count", "1721", "41.4849370253831", "0"))
   
   
 })
