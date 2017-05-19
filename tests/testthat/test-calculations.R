@@ -1,5 +1,5 @@
 context("Calculations")
 
-test_that("isotope ratios and abundances are calculated correctly", {
-  
+test_that("derived quantities are calculated correctly", {
+  # implement me
 })
