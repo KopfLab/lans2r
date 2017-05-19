@@ -1,7 +1,6 @@
 ---
 title: "NanoSIMS data processing of LANS data in R"
 author: "Sebastian Kopf"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction}
@@ -55,7 +54,7 @@ data <- data %>%
   calculate_abundances(c(`13C`, `12C`), c(`15N12C`, `14N12C`)) 
 ```
 
-For additional operations, one can use the more generic `calculate` function and provide custom functions for value and error calculations and name construction. Here, we have APE (atom percent enrichment) as an example.
+For additional operations, one can use the more generic `calculate` function and provide custom functions for value and error calculations and name construction. Here, we have APE (atom percent enrichment) as an example. For additional examples on `calculate`, see the `vignette("lans2r-calculate")`.
 
 ```{r}
 data <- data %>% 
