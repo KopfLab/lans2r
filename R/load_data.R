@@ -18,7 +18,7 @@
 load_LANS_summary <- function(analysis, ..., base_dir = ".", ion_data_only = TRUE, load_zstacks = TRUE, quiet = F) {
   
   if(!dir.exists(base_dir))
-    stop("The base directory does not exist: ", base_dir)
+    stop("The base directory does not exist: ", base_dir, call. = FALSE)
   
   info <- data_frame(analysis = analysis, ...)
   data <- lapply(analysis, function(i) {
@@ -47,7 +47,7 @@ load_LANS_summary <- function(analysis, ..., base_dir = ".", ion_data_only = TRU
 load_LANS_maps <- function(analysis, ..., base_dir = ".", ion_data_only = TRUE, quiet = F) {
   
   if(!dir.exists(base_dir))
-    stop("The base directory does not exist: ", base_dir)
+    stop("The base directory does not exist: ", base_dir, call. = FALSE)
   
   info <- data_frame(analysis = analysis, ...)
   data <- lapply(analysis, function(i) {
