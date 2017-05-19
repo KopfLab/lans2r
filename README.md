@@ -1,6 +1,9 @@
 lans2r
 ======
 
+[![Build Status](https://travis-ci.org/KopfLab/lans2r.svg?branch=master)](https://travis-ci.org/KopfLab/lans2r)
+[![codecov.io](https://codecov.io/github/KopfLab/lans2r/coverage.svg?branch=master)](https://codecov.io/github/KopfLab/lans2r?branch=master)
+
 Data interface from Look@NanoSIMS to R.
 
 ## Introduction
