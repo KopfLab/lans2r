@@ -15,6 +15,7 @@ plot_maps <- function(data, draw_ROIs = T, normalize = T, color_scale = c("black
   if (nrow(data) == 0)
     stop("no rows in data frame")
   
+  if (!"analysis" %in% names(data)) data$analysis <- "data"
   rois <- data %>% group_by(analysis) %>% extract_roi_boundaries()
   
   if (normalize) {
@@ -32,7 +33,7 @@ plot_maps <- function(data, draw_ROIs = T, normalize = T, color_scale = c("black
     expand_limits(x = c(0, data$frame_size.um[1]), y = c(0, data$frame_size.um[1])) +
     theme_bw() + 
     theme(panel.background = element_rect(fill = "black"),
-          panel.margin = unit(0, "mm"),
+          panel.spacing = unit(0, "mm"),
           strip.text = element_text(size = 20),
           legend.position = "bottom", 
           strip.background = element_blank()) +
@@ -53,16 +54,13 @@ plot_maps <- function(data, draw_ROIs = T, normalize = T, color_scale = c("black
 }
 
 
-#' figure out the ROI boundaries from LANS map export
-#' @param data data_frame from LANS map, can already be grouped
+# figure out the ROI boundaries from LANS map export
+# @param data data_frame from LANS map, can already be grouped
 extract_roi_boundaries <- function(data) {
   
   # checks
-  if (is.null(data$ROI)) stop("ROI column does not exist")
-  if (is.null(data$variable)) stop("variable column does not exist")
-  if (is.null(data$x.px)) stop("x.px column does not exist")
-  if (is.null(data$y.px)) stop("y.px column does not exist")
-  
+  sapply(c("ROI", "variable", "x.px", "y.px"), col_check, data, sys.call())
+
   # function to determine if on border
   is_on_border <- function(x, y) {
     is_pixel_on_border <- function(xi, yi) {
@@ -84,6 +82,7 @@ extract_roi_boundaries <- function(data) {
       ungroup() %>% 
       filter_(.dots = list(~roi_border)) %>% 
       select(-variable) %>% 
-      inner_join(data %>% group_by(ROI, variable, add=TRUE) %>% select(variable) %>% distinct())  # merge variables back in
+      inner_join(data %>% group_by(ROI, variable, add=TRUE) %>% select(variable) %>% distinct()) %>% 
+      arrange_(.dots = c("x.px", "y.px")) # merge variables back in
   )
 }
