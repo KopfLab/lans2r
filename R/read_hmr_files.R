@@ -5,6 +5,9 @@
 #'@param suffix - the suffix for the set of hmr files
 #'@note TODO: this needs  little more documentation and an example Rmd
 load_HMR <- function(folder, prefix, suffix = ".hmr_txt") {
+  # 'global' variables
+  Pt <- NULL; X <- NULL;
+  # retrieve HMR data
   df <- data.frame(stringsAsFactors=F)
   pattern <- paste0(prefix,"(.*)", suffix) # file pattern
   for (file in dir(folder, pattern = pattern)) {

@@ -4,7 +4,7 @@
 #' @import dplyr
 #' @import tidyr
 #' @import ggplot2
-#' @importFrom lazyeval lazy lazy_dots lazy_eval interp
+#' @import lazyeval
 #' @importFrom stats setNames sigma var
 #' @importFrom utils read.table
 #' @importFrom R.matlab readMat
@@ -12,4 +12,6 @@
 NULL
 
 ## quiets concerns of R CMD check about . that appears in pipelines
-utils::globalVariables(c("."))
+## and the standard column names used in non-standard evaluation
+utils::globalVariables(c(".", "variable", "value", "analysis", 
+                         "x.um", "y.um", "ROI", "plane", "data_type"))

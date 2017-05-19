@@ -13,13 +13,15 @@ Depends:
 Imports:
     dplyr,
     tidyr,
+    reshape2,
     ggplot2,
     lazyeval,
     R.matlab
 Suggests:
     testthat,
     rmarkdown,
-    knitr
+    knitr,
+    covr
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -10,7 +10,7 @@
 #' @param ion_data_only - whether to import only ion data [TRUE by default], rather than any derived files (e.g. ratios calculated 
 #'    within LANS). Recommend using \link{calculate_ratios} and \link{calculate_abundances} to process the raw ion counts in easy
 #'    format and good error propagation.
-#' @param load_zstack - whether to load the planes data (ion-z.dat files need to be exported from 
+#' @param load_zstacks - whether to load the planes data (ion-z.dat files need to be exported from 
 #' LANS for this to be possible - they are created when the "Display depth profiles in ROI" is checked
 #' during "Display masses")
 #' @param quiet - whether to report information on the loaded data or not

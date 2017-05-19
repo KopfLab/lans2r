@@ -29,7 +29,7 @@ the original data frame with the newly calculated information appended (data_typ
 }
 \description{
 This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. 
-\link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
+\link{calculate_sums}, \link{calculate_ratios} and \link{calculate_abundances} are all based on this and provide an easy way for common standard calculations.
 }
 \seealso{
 Other calculations: \code{\link{calculate_abundances}},

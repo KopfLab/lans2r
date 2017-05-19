@@ -80,9 +80,9 @@ extract_roi_boundaries <- function(data) {
     data %>% filter(ROI > 0) %>% 
       group_by(ROI, add=TRUE) %>% 
       filter(variable == variable[1]) %>%  # calculate for just one variable, for speed
-      mutate (roi_border = is_on_border(x.px, y.px)) %>% 
+      mutate_(.dots = list(~is_on_border(x.px, y.px)) %>% setNames("roi_border")) %>% 
       ungroup() %>% 
-      filter(roi_border) %>% 
+      filter_(.dots = list(~roi_border)) %>% 
       select(-variable) %>% 
       inner_join(data %>% group_by(ROI, variable, add=TRUE) %>% select(variable) %>% distinct())  # merge variables back in
   )

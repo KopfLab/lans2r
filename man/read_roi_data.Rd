@@ -12,9 +12,9 @@ read_roi_data(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE,
 
 \item{ion_data_only}{- by default TRUE, i.e. ignores all non-ion data files}
 
-\item{quiet}{- whether to report information on the loaded data or not}
+\item{load_zstacks}{- whether to load any z_stacks found, by default TRUE}
 
-\item{load_zstack}{- whether to load any z_stacks found, by default TRUE}
+\item{quiet}{- whether to report information on the loaded data or not}
 }
 \value{
 concatenated data_frame with all the ROIs' data, with identifier columns 'plane', 'ROI' and 'variable'

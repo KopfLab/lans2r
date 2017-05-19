@@ -26,6 +26,8 @@ To load data into R, export it from LANS which creates a folder for each analysi
 
 ```{r, message=FALSE, warning=FALSE}
 library(lans2r)
+library(dplyr)
+library(knitr)
 folder <- system.file("extdata", "nanosims_data", package = "lans2r") # data base directory
 ```
 

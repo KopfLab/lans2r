@@ -19,11 +19,11 @@ load_LANS_summary(analysis, ..., base_dir = ".", ion_data_only = TRUE,
 within LANS). Recommend using \link{calculate_ratios} and \link{calculate_abundances} to process the raw ion counts in easy
 format and good error propagation.}
 
-\item{quiet}{- whether to report information on the loaded data or not}
-
-\item{load_zstack}{- whether to load the planes data (ion-z.dat files need to be exported from 
+\item{load_zstacks}{- whether to load the planes data (ion-z.dat files need to be exported from 
 LANS for this to be possible - they are created when the "Display depth profiles in ROI" is checked
 during "Display masses")}
+
+\item{quiet}{- whether to report information on the loaded data or not}
 }
 \description{
 Load the ROI summary information exported from LANS analyses and attach additional information to each analysis. 

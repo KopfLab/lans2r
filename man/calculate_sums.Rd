@@ -7,7 +7,7 @@
 calculate_sums(data, ..., name_fun = default_name, quiet = F)
 }
 \arguments{
-\item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
+\item{data}{a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}}
 
 \item{...}{the ion sums to calculate, each entry is for one sum of as many ions as desired,
 e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...}

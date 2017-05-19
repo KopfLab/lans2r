@@ -1,7 +1,7 @@
 #' Calculate derived data
 #' 
 #' This function allows easy calculation of any quantities derived from other variables. The new quantities can be assigned to a specific data_type and values, errors as well as the resulting variable names are calculated/constructed based on custom functions that can be provided via the function parameters. 
-#' \link{calculate_sums}, \link{calculate_ratios} and \link{calculate abundances} are all based on this and provide an easy way for common standard calculations.
+#' \link{calculate_sums}, \link{calculate_ratios} and \link{calculate_abundances} are all based on this and provide an easy way for common standard calculations.
 #' 
 #' @param data a data frame with lans2r data, can be grouped to do calculations within individual groups
 #' @param data_type what to call the new data type
@@ -135,7 +135,7 @@ calculate <- function(data, data_type, ..., value_fun,
 #' LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 #' from many analyses.
 #' 
-#' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
+#' @param data a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}
 #' @param ... the ion sums to calculate, each entry is for one sum of as many ions as desired,
 #' e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
 #' @param name_fun the naming function, receives ... from the top level, default concatenates column names with '+'
@@ -182,7 +182,7 @@ calculate_sums <- function(data, ..., name_fun = default_name, quiet = F) {
 #' from many analyses. It can also be applied to ion_sums generate by calculate_sums
 #' to calculate elemental ratios (careful, ionization efficiencies skew their scaling!)
 #' 
-#' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
+#' @param data a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}
 #' @param ... the ratios to calculate, each entry is one ratio with major isotope first, then
 #' minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
 #' @param name_fun the naming function, receives ... from the top level, default concatenates column names with '/'
@@ -215,7 +215,7 @@ calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
 #' LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 #' from many analyses.
 #' 
-#' @param data a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}
+#' @param data a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}
 #' @param ... the fractional abundances to calculate, each entry is for one fractional abundance with major isotope first, then
 #' minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
 #' @param name_fun the naming function, receives ... from the top level, default concatenates 'F' + minor ion name

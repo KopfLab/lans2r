@@ -7,7 +7,7 @@
 calculate_abundances(data, ..., name_fun = default_name, quiet = F)
 }
 \arguments{
-\item{data}{a data frame with raw ion counts retrieved from \code{\link{load_analysis_data()}}}
+\item{data}{a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}}
 
 \item{...}{the fractional abundances to calculate, each entry is for one fractional abundance with major isotope first, then
 minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...}
