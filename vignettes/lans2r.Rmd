@@ -1,6 +1,5 @@
 ---
 title: "NanoSIMS data processing of LANS data in R"
-author: "Sebastian Kopf"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction}

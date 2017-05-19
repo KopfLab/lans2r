@@ -1,6 +1,5 @@
 ---
 title: "NanoSIMS data processing of LANS data in R: how to use `calculate`"
-author: "Sebastian Kopf"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Calculate}
