@@ -22,4 +22,4 @@ devtools::install_github('KopfLab/lans2r')
 
 ## Example
 
-For instructions on how to use this package, please **[check out the example](https://github.com/KopfLab/lans2r/raw/master/vignettes/example.Rmd)** and the resulting [HTML output](https://rawgit.com/KopfLab/lans2r/master/inst/doc/example.html).
+For instructions on how to use this package, please **[check out the example](https://github.com/KopfLab/lans2r/raw/master/vignettes/lans2r.Rmd)** and the resulting [HTML output](https://rawgit.com/KopfLab/lans2r/master/inst/doc/lans2r.html).
