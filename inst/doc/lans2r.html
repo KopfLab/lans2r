@@ -95,13 +95,13 @@ folder &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span c
     <span class="dt">info =</span> <span class="kw">c</span>(<span class="st">&quot;turtle&quot;</span>, <span class="st">&quot;jetpack&quot;</span>, <span class="st">&quot;pizza&quot;</span>), <span class="co"># any additional information about the analyses</span>
     <span class="dt">quiet =</span> F <span class="co"># output information about the files</span>
   ) </code></pre></div>
-<pre><code>## INFO: folder '/Library/Frameworks/R.framework/Versions/3.3/Resources/library/lans2r/extdata/nanosims_data/analysis1/dat' read successfully.
+<pre><code>## INFO: folder '/Users/sk/Dropbox/Tools/software/R/lans2r/inst/extdata/nanosims_data/analysis1/dat' read successfully.
 ##       Data for 37 ROIs with 4 ions recovered: 12C, 13C, 14N12C, 15N12C.
 ##       Z-stacks were loaded. Recovered 2 planes.</code></pre>
-<pre><code>## INFO: folder '/Library/Frameworks/R.framework/Versions/3.3/Resources/library/lans2r/extdata/nanosims_data/analysis2/dat' read successfully.
+<pre><code>## INFO: folder '/Users/sk/Dropbox/Tools/software/R/lans2r/inst/extdata/nanosims_data/analysis2/dat' read successfully.
 ##       Data for 33 ROIs with 4 ions recovered: 12C, 13C, 14N12C, 15N12C.
 ##       Z-stacks were loaded. Recovered 2 planes.</code></pre>
-<pre><code>## INFO: folder '/Library/Frameworks/R.framework/Versions/3.3/Resources/library/lans2r/extdata/nanosims_data/analysis3/dat' read successfully.
+<pre><code>## INFO: folder '/Users/sk/Dropbox/Tools/software/R/lans2r/inst/extdata/nanosims_data/analysis3/dat' read successfully.
 ##       Data for 34 ROIs with 4 ions recovered: 12C, 13C, 14N12C, 15N12C.
 ##       Z-stacks were loaded. Recovered 2 planes.</code></pre>
 <p>To calculate ratios and abundances, simply specificy which ions you would like to ratio. Note: for convenience, we make use of the pipe operator <code>%&gt;%</code> for chaining multiple operations. For more information on the pipe, take a look at the <a href="https://cran.r-project.org/web/packages/magrittr/index.html">magrittr package</a>.</p>
@@ -973,13 +973,13 @@ data %&gt;%<span class="st"> </span>
     <span class="dt">analysis =</span> <span class="kw">c</span>(<span class="st">&quot;analysis1&quot;</span>, <span class="st">&quot;analysis2&quot;</span>, <span class="st">&quot;analysis3&quot;</span>),
     <span class="dt">base_dir =</span> folder
   ) </code></pre></div>
-<pre><code>## INFO: folder '/Library/Frameworks/R.framework/Versions/3.3/Resources/library/lans2r/extdata/nanosims_data/analysis1/mat' read successfully.
+<pre><code>## INFO: folder '/Users/sk/Dropbox/Tools/software/R/lans2r/inst/extdata/nanosims_data/analysis1/mat' read successfully.
 ##       Ion map data for 256 x 256 pixel frame (10.014 microm^2) for 4 ions recovered: 12C, 13C, 14N12C, 15N12C.
 ##       37 ROIs identified in the frame.</code></pre>
-<pre><code>## INFO: folder '/Library/Frameworks/R.framework/Versions/3.3/Resources/library/lans2r/extdata/nanosims_data/analysis2/mat' read successfully.
+<pre><code>## INFO: folder '/Users/sk/Dropbox/Tools/software/R/lans2r/inst/extdata/nanosims_data/analysis2/mat' read successfully.
 ##       Ion map data for 256 x 256 pixel frame (10.014 microm^2) for 4 ions recovered: 12C, 13C, 14N12C, 15N12C.
 ##       33 ROIs identified in the frame.</code></pre>
-<pre><code>## INFO: folder '/Library/Frameworks/R.framework/Versions/3.3/Resources/library/lans2r/extdata/nanosims_data/analysis3/mat' read successfully.
+<pre><code>## INFO: folder '/Users/sk/Dropbox/Tools/software/R/lans2r/inst/extdata/nanosims_data/analysis3/mat' read successfully.
 ##       Ion map data for 256 x 256 pixel frame (10.014 microm^2) for 4 ions recovered: 12C, 13C, 14N12C, 15N12C.
 ##       34 ROIs identified in the frame.</code></pre>
 <p>The data in these looks similar to the summary data frame except that it is broken out pixel by pixel:</p>
