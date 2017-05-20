@@ -2,10 +2,12 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^\.httr-oauth$
+^appveyor\.yml$
 ^codecov\.yml$
 ^Makefile$
 ^NEWS$
 ^docs$
 ^tmp$
 ^README-.*\.png$
+^cran-comments\.md$
 ^logo\.png$
