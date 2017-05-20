@@ -14,8 +14,5 @@ load_HMR(folder, prefix, suffix = ".hmr_txt")
 \item{suffix}{- the suffix for the set of hmr files}
 }
 \description{
-Read data from HMR txt files
-}
-\note{
-TODO: this needs  little more documentation and an example Rmd
+See HMR vignette for examples.
 }
