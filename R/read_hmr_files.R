@@ -1,9 +1,11 @@
 #' Read data from HMR txt files
 #'
+#' See HMR vignette for examples.
+#'
 #'@param folder - the folder where the HMR files are
 #'@param prefix - the prefix for the set of hmr files
 #'@param suffix - the suffix for the set of hmr files
-#'@note TODO: this needs  little more documentation and an example Rmd
+#'@export
 load_HMR <- function(folder, prefix, suffix = ".hmr_txt") {
   # 'global' variables
   Pt <- NULL; X <- NULL;
