@@ -124,6 +124,32 @@ test_that("test that calculate abundances works properly", {
 })
 
 test_that("test that calculate sums works properly", {
-  # implement me
+  
+  expect_message(test_data %>% calculate_sums(c(`A`, `B`), c(`C`, `D`)), "10 'ion_sum' values \\+ errors calculated")
+  expect_silent(sum_data <- test_data %>% calculate_sums(c(`A`, `B`), c(`C`, `D`), quiet = T))
+  
+  # data checks
+  expect_equal(sum_data$data_type %>% unique(), c("temp", "ion_sum"))
+  expect_equal(sum_data %>% filter(data_type == "ion_sum") %>% {.$variable} %>% unique(), c("A+B", "C+D"))
+  
+  expect_equal(
+    left_join(a, b, by="ROI") %>% mutate(value = value.x + value.y) %>% {.$value},
+    sum_data %>% filter(variable == "A+B") %>% {.$value})
+  
+  expect_equal(
+    left_join(c, d, by="ROI") %>% mutate(value = value.x + value.y) %>% {.$value},
+    sum_data %>% filter(variable == "C+D") %>% {.$value})
+  
+  # error calculation (based on ion count errors!!!)
+  expect_equal(
+    left_join(a, b, by="ROI") %>% mutate(error = sqrt(value.y + value.x)) %>% {.$error},
+    sum_data %>% filter(variable == "A+B") %>% {.$sigma})
+  
+  # other parameters check (filter_new)
+  expect_equal(
+    test_data %>% calculate_sums(c(`A`, `B`), c(`C`, `D`), quiet = T, filter_new = variable == "A+B") %>% 
+      filter(data_type == "ion_sum") %>% {.$variable} %>% unique(), "A+B"
+  )
+  
 })
 
