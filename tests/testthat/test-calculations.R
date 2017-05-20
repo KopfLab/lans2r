@@ -95,7 +95,32 @@ test_that("test that calculate ratios works properly", {
 })
 
 test_that("test that calculate abundances works properly", {
-  #  implement me
+  expect_message(test_data %>% calculate_abundances(c(`A`, `B`), c(`C`, `D`)), "10 'abundance' values \\+ errors calculated")
+  expect_silent(ab_data <- test_data %>% calculate_abundances(c(`A`, `B`), c(`C`, `D`), quiet = T))
+  
+  # data checks
+  expect_equal(ab_data$data_type %>% unique(), c("temp", "abundance"))
+  expect_equal(ab_data %>% filter(data_type == "abundance") %>% {.$variable} %>% unique(), c("A F", "C F"))
+  
+  expect_equal(
+    left_join(a, b, by="ROI") %>% mutate(value = value.x/(value.x + value.y)) %>% {.$value},
+    ab_data %>% filter(variable == "A F") %>% {.$value})
+  
+  expect_equal(
+    left_join(c, d, by="ROI") %>% mutate(value = value.x/(value.x + value.y)) %>% {.$value},
+    ab_data %>% filter(variable == "C F") %>% {.$value})
+  
+  # error calculation (based o ion count errors)
+  expect_equal(
+    left_join(a, b, by="ROI") %>% mutate(error = lans2r:::iso.errF(value.y,value.x)) %>% {.$error},
+    ab_data %>% filter(variable == "A F") %>% {.$sigma})
+  
+  # other parameters check (filter_new)
+  expect_equal(
+    test_data %>% calculate_abundances(c(`A`, `B`), c(`C`, `D`), quiet = T, filter_new = variable == "A F") %>% 
+      filter(data_type == "abundance") %>% {.$variable} %>% unique(), "A F"
+  )
+  
 })
 
 test_that("test that calculate sums works properly", {
