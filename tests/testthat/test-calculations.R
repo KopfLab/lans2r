@@ -1,10 +1,10 @@
 context("Calculations")
 
 # test data
-a <- data_frame(variable = "A", ROI = 1:5, value = runif(5), sigma = 0.1, data_type = "temp")
-b <- data_frame(variable = "B", ROI = 1:5, value = rnorm(5), sigma = 0.2, data_type = "temp")
-c <- data_frame(variable = "C", ROI = 1:5, value = rnorm(5), sigma = 0.2, data_type = "temp")
-d <- data_frame(variable = "D", ROI = 1:5, value = rnorm(5), sigma = 0.2, data_type = "temp")
+a <- data_frame(variable = "A", ROI = 1:5, value = rpois(5, 20), sigma = 0.1, data_type = "temp")
+b <- data_frame(variable = "B", ROI = 1:5, value = rpois(5, 20), sigma = 0.2, data_type = "temp")
+c <- data_frame(variable = "C", ROI = 1:5, value = rpois(5, 20), sigma = 0.2, data_type = "temp")
+d <- data_frame(variable = "D", ROI = 1:5, value = rpois(5, 20), sigma = 0.2, data_type = "temp")
 test_data <- bind_rows(a, b, c, d)
 
 test_that("test that calculate works properly", {
@@ -36,6 +36,7 @@ test_that("test that calculate works properly", {
         value_fun = my_value_fun, error_fun = my_error_fun, name_fun = my_name_fun))
 
   # data checks
+  expect_equal(deriv_data %>% nrow(), nrow(test_data) + nrow(a) * 2)
   expect_equal(deriv_data %>% filter(data_type == "derived") %>% {.$variable} %>% unique(),
                c("D*C", "B*A"))
   expect_equal(
@@ -53,10 +54,44 @@ test_that("test that calculate works properly", {
       mutate(error  = my_error_fun(value.x, value.y, sigma.x, sigma.y)) %>% {.$error},
     deriv_data %>% filter(variable == "D*C") %>% {.$sigma})
   
+  # other parameters check (filter_new)
+  expect_message(
+    filtered_deriv <- 
+      test_data %>% 
+      calculate(
+        data_type = "derived",
+        c(D, C, `D sigma`, `C sigma`), c(B, A, `B sigma`, `A sigma`),
+        value_fun = my_value_fun, error_fun = my_error_fun, name_fun = my_name_fun,
+        filter_new = variable == "B*A"), "variable == \"B\\*A\"")
+  expect_equal(nrow(filtered_deriv), nrow(test_data) + nrow(a))
 })
 
 test_that("test that calculate ratios works properly", {
-  # implement me
+  expect_message(test_data %>% calculate_ratios(c(`A`, `B`), c(`C`, `D`)), "10 'ratio' values \\+ errors calculated")
+  expect_silent(ratio_data <- test_data %>% calculate_ratios(c(`A`, `B`), c(`C`, `D`), quiet = T))
+  
+  # data checks
+  expect_equal(ratio_data$data_type %>% unique(), c("temp", "ratio"))
+  expect_equal(ratio_data %>% filter(data_type == "ratio") %>% {.$variable} %>% unique(), c("A/B", "C/D"))
+  
+  expect_equal(
+    left_join(a, b, by="ROI") %>% mutate(value = value.x/value.y) %>% {.$value},
+    ratio_data %>% filter(variable == "A/B") %>% {.$value})
+  
+  expect_equal(
+    left_join(c, d, by="ROI") %>% mutate(value = value.x/value.y) %>% {.$value},
+    ratio_data %>% filter(variable == "C/D") %>% {.$value})
+  
+  # error calculation (based o ion count errors)
+  expect_equal(
+    left_join(a, b, by="ROI") %>% mutate(error = lans2r:::iso.errR(value.y,value.x)) %>% {.$error},
+    ratio_data %>% filter(variable == "A/B") %>% {.$sigma})
+  
+  # other parameters check (filter_new)
+  expect_equal(
+    test_data %>% calculate_ratios(c(`A`, `B`), c(`C`, `D`), quiet = T, filter_new = variable == "A/B") %>% 
+      filter(data_type == "ratio") %>% {.$variable} %>% unique(), "A/B"
+  )
 })
 
 test_that("test that calculate abundances works properly", {
