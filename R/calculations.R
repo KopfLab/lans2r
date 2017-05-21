@@ -6,9 +6,9 @@
 #' @param data a data frame with lans2r data, can be grouped to do calculations within individual groups
 #' @param data_type what to call the new data type
 #' @param ... the parameters to send to the value, error and naming function for each derived value. These are always expressions that can include references to variable columns, arithmetic and constants, e.g. c(`12C`, `13C`) or c("test", 100*(`12C`+`13C`)). The number of parameters needs to match those expected by the value, error and name functions. Error values of different columns (say for classical error propagation) can be addressed using the suffix "sigma", e.g. c(`12C`, `12C sigma`) would pass both the value and error of this variable to the functions.
-#' @param value_fun a custom function used to calculate the derived value - needs to match the sets of paramters provided through ...
-#' @param error_fun a custom function used to calcluate the error (sigma) for the derived value - needs to match the sets of paramters provided through ...
-#' @param name_fun a custom function used to construct the variable name for the derived quantity - needs to match the sets of paramters provided through ...
+#' @param value_fun a custom function used to calculate the derived value - needs to match the sets of parameters provided through ...
+#' @param error_fun a custom function used to calculate the error (sigma) for the derived value - needs to match the sets of parameters provided through ...
+#' @param name_fun a custom function used to construct the variable name for the derived quantity - needs to match the sets of parameters provided through ...
 #' @param filter_new an expression to apply as a filter on the new data rows (e.g. plane == "all")
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
 #' @return the original data frame with the newly calculated information appended (data_type == "ion_sum")
@@ -93,7 +93,7 @@ calculate <- function(data, data_type, ..., value_fun,
         mutate(variable = as.character(variable)) %>% # don't like the factor it introduces
         return()
     }) %>% 
-    filter(!is.na(value)) %>% # remove calcluations that don't exist
+    filter(!is.na(value)) %>% # remove calculations that don't exist
     mutate(data_type = new_data_type)
   
   # filter out parts of it
@@ -136,7 +136,7 @@ calculate <- function(data, data_type, ..., value_fun,
 #' from many analyses. Careful about its error propagation, it assumes it is calculating
 #' sums of ions and uses the ion counts themselves for error calculation. This is not 
 #' suitable for calculating other types of sums where other types of error propagation
-#' may be more approriate.
+#' may be more appropriate.
 #' 
 #' @param data a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}
 #' @param ... the ion sums to calculate, each entry is for one sum of as many ions as desired,
@@ -211,7 +211,7 @@ calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
 }
 
 
-#' Calculate istope fractional abundances
+#' Calculate isotope fractional abundances
 #' 
 #' This function calculates the isotope abundances (in %!) and resulting counting
 #' statistics error from the raw ion counts. It can be applied to data from both
@@ -223,7 +223,7 @@ calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
 #' minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...
 #' @param name_fun the naming function, receives ... from the top level, default concatenates 'F' + minor ion name
 #' @param quiet whether the function should output information messages or be quiet (default is to output)
-#' @return the original data frame with the fractional abundance information appended (all fractoinal abundances are in % and have data_type == "abundance")
+#' @return the original data frame with the fractional abundance information appended (all fractional abundances are in % and have data_type == "abundance")
 #' @family calculations
 #' @export
 calculate_abundances <- function(data, ..., name_fun = default_name, quiet = F) {

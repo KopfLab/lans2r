@@ -5,7 +5,7 @@
 #' Reads the ion data (.dac/.dat) files for the given LANS analysis folder
 #' and returns the ROIs data in a concatenated data frame with identifier
 #' columns 'ROI' and 'variable' (=ions). Note that this only reads ion data files by
-#' default and not any derived data files (any ratio or other formulae
+#' default and not any derived data files (any ratio or other formulas
 #' evaluated by LANS). If zstacks (i.e. individual planes) are exported from LANS,
 #' they can be loaded as well (and are by default). The resulting data frame
 #' has a 'plane' column that keeps track of the plane, the value 'all' identifies
@@ -133,7 +133,7 @@ read_roi_ion_zstack_data_file <- function (file) {
 #' identifier column 'variable' (=ion), data columns value (ion count) and sigma (error based on
 #' counting statistics). Additionally, the column 'ROI' indicates which ROI each pixel belongs to
 #' with a value of 0 indiciating that it does not belong to any ROI. Note that this only reads ion 
-#' data files by default and not any derived data files (any ratio or other formulae
+#' data files by default and not any derived data files (any ratio or other formulas
 #' evaluated by LANS). It does also not currently support z-stacks yet.
 #'
 #' @param mat_folder - the LANS mat directory with the ions' .mat files

@@ -4,7 +4,7 @@
 #' 
 #' @param data a data frame with lans2r data
 #' @param values whether to include the values in wide format
-#' @param errors wheter to include the errors in wide format
+#' @param errors whether to include the errors in wide format
 #' @return the original data frame but in wide format
 #' @export
 spread_data <- function(data, values = TRUE, errors = TRUE) {

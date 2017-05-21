@@ -11,7 +11,7 @@ spread_data(data, values = TRUE, errors = TRUE)
 
 \item{values}{whether to include the values in wide format}
 
-\item{errors}{wheter to include the errors in wide format}
+\item{errors}{whether to include the errors in wide format}
 }
 \value{
 the original data frame but in wide format

@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculations.R
 \name{calculate_abundances}
 \alias{calculate_abundances}
-\title{Calculate istope fractional abundances}
+\title{Calculate isotope fractional abundances}
 \usage{
 calculate_abundances(data, ..., name_fun = default_name, quiet = F)
 }
@@ -17,7 +17,7 @@ minor isotope, e.g. c(`13C`, `12C`), c(`15N12C`, `14C12C`), ...}
 \item{quiet}{whether the function should output information messages or be quiet (default is to output)}
 }
 \value{
-the original data frame with the fractional abundance information appended (all fractoinal abundances are in % and have data_type == "abundance")
+the original data frame with the fractional abundance information appended (all fractional abundances are in % and have data_type == "abundance")
 }
 \description{
 This function calculates the isotope abundances (in %!) and resulting counting

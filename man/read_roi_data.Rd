@@ -23,7 +23,7 @@ concatenated data_frame with all the ROIs' data, with identifier columns 'plane'
 Reads the ion data (.dac/.dat) files for the given LANS analysis folder
 and returns the ROIs data in a concatenated data frame with identifier
 columns 'ROI' and 'variable' (=ions). Note that this only reads ion data files by
-default and not any derived data files (any ratio or other formulae
+default and not any derived data files (any ratio or other formulas
 evaluated by LANS). If zstacks (i.e. individual planes) are exported from LANS,
 they can be loaded as well (and are by default). The resulting data frame
 has a 'plane' column that keeps track of the plane, the value 'all' identifies

@@ -26,7 +26,7 @@ LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 from many analyses. Careful about its error propagation, it assumes it is calculating
 sums of ions and uses the ion counts themselves for error calculation. This is not 
 suitable for calculating other types of sums where other types of error propagation
-may be more approriate.
+may be more appropriate.
 }
 \seealso{
 Other calculations: \code{\link{calculate_abundances}},
