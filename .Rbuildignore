@@ -9,5 +9,7 @@
 ^docs$
 ^tmp$
 ^README-.*\.png$
+^README\.Rmd$
 ^cran-comments\.md$
 ^logo\.png$
+
