@@ -5,7 +5,7 @@
 #' 
 #' @param analysis - vector of LANS analysis folder names
 #' @param ... - vectors of additional information to attach to each analysis, each argument has to have the same length as the 
-#'    'analysis' paramter (or length 1)
+#'    'analysis' parameter (or length 1)
 #' @param base_dir - the directory where all the analysis folders are located (defaults to current directory)
 #' @param ion_data_only - whether to import only ion data [TRUE by default], rather than any derived files (e.g. ratios calculated 
 #'    within LANS). Recommend using \link{calculate_ratios} and \link{calculate_abundances} to process the raw ion counts in easy
@@ -37,7 +37,7 @@ load_LANS_summary <- function(analysis, ..., base_dir = ".", ion_data_only = TRU
 #' 
 #' @param analysis - vector of LANS analysis folder names
 #' @param ... - vectors of additional information to attach to each analysis, each argument has to have the same length as the 
-#'    'analysis' paramter (or length 1)
+#'    'analysis' parameter (or length 1)
 #' @param base_dir - the directory where all the analysis folders are located (defaults to current directory)
 #' @param ion_data_only - whether to import only ion data [TRUE by default], rather than any derived files (e.g. ratios calculated 
 #'    within LANS). Recommend using \link{calculate_ratios} and \link{calculate_abundances} to process the raw ion counts in easy

@@ -11,7 +11,7 @@ load_LANS_summary(analysis, ..., base_dir = ".", ion_data_only = TRUE,
 \item{analysis}{- vector of LANS analysis folder names}
 
 \item{...}{- vectors of additional information to attach to each analysis, each argument has to have the same length as the 
-'analysis' paramter (or length 1)}
+'analysis' parameter (or length 1)}
 
 \item{base_dir}{- the directory where all the analysis folders are located (defaults to current directory)}
 

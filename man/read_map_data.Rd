@@ -21,7 +21,7 @@ Reads the full matlab data files (.mat) that contain the complete ion maps and R
 for the given LANS analysis folder and returns the data in a concatenated data frame with
 identifier column 'variable' (=ion), data columns value (ion count) and sigma (error based on
 counting statistics). Additionally, the column 'ROI' indicates which ROI each pixel belongs to
-with a value of 0 indiciating that it does not belong to any ROI. Note that this only reads ion 
+with a value of 0 indicating that it does not belong to any ROI. Note that this only reads ion 
 data files by default and not any derived data files (any ratio or other formulas
 evaluated by LANS). It does also not currently support z-stacks yet.
 }
