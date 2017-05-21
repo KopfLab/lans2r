@@ -13,8 +13,6 @@ library(dplyr)
 library(knitr)
 ```
 
-# `calculate`
-
 The `?calculate` function is intended to make it easy and efficient to calculate sets of derived quantities (e.g. ratios from `13C` and `12C` data but also from `15N12C` and `14N12C` data). It allows defining exactly how the derived quantities should be calculated but also makes it possible to calculate derived errors and how to go about naming the newly derived quantities. Due to its structure it allows for a large amount of flexibility to cover all possible use cases. This vignettes illustrates some basic examples how this may be used to calculate derived quantities from measured ion currents. The functions `?calculate_ratios`, `?calculate_abundances`, `?calculate_sums` are all pre-implemented examples of using `calculate` to achieve a specific task and work out of the box without additional specifications as illustrated in the main vignette.
 
 #### Test data
