@@ -13,9 +13,7 @@ test_that("test that it is possible to read ROI data file", {
   expect_equal(data %>% nrow(), data$ROI %>% unique() %>% length())
   expect_equal(data %>% names(), c("plane", "ROI", "data_type", "variable", "value", "sigma", 
                                    "coord_x", "coord_y", "size", "pixels", "LW_ratio"))
-  expect_equal(data %>% {.[1,]} %>% as.character(), 
-               c("all", "1", "ion_count", "12C", "1895850", "1376.89868908355", 
-                 "17.38", "192.93", "0.83", "353", "2.45"))
+  expect_equal(data$pixels[3], 250) # spot check
   
 })
 
@@ -28,8 +26,8 @@ test_that("test that it is possible to read ROI z-stack data file", {
   
   expect_equal(data %>% nrow(), (data$plane %>% unique() %>% length()) * (data$ROI %>% unique() %>% length()))
   expect_equal(data %>% names(), c("plane", "data_type", "variable", "ROI", "sigma", "value"))
-  expect_equal(data %>% {.[1,]} %>% as.character(), 
-               c("1", "ion_count", "12C", "1", "946.255779374689", "895400"))
+  expect_equal(data$value[5], 877000) # spot check
+  expect_equal(data$plane[5], "1") # spot check
   
 })
 
@@ -48,9 +46,8 @@ test_that("possible to read all roi data", {
   expect_equal(data %>% nrow(), 444)
   expect_equal(data %>% names(), c("plane", "ROI", "data_type", "variable", "value", "sigma", 
                                    "coord_x", "coord_y", "size", "pixels", "LW_ratio"))
-  expect_equal(data %>% {.[1,]} %>% as.character(), 
-               c("all", "1", "ion_count", "12C", "1895850", "1376.89868908355", 
-                 "17.38", "192.93", "0.83", "353", "2.45"))
+  expect_equal(data$pixels[3], 250) # spot check
+  expect_equal(data$plane[3], "all") # spot check
 })
 
 test_that("test that it is possible to read full ion data file", {
@@ -63,11 +60,12 @@ test_that("test that it is possible to read full ion data file", {
                c("x.px", "y.px", "frame_size.px", "x.um", "y.um", "frame_size.um", 
                  "variable", "data_type", "value", "sigma", "ROI"))
   
-  expect_equal(data %>% { .$frame_size.px[1]^2}, data %>% nrow())
+  expect_equal(data$frame_size.px[1]^2 %>% as.integer(), data %>% nrow()) 
   
-  expect_equal(data %>% {.[1,]} %>% as.character(),
-               c("1", "1", "256", "0.0391171875", "0.0391171875", "10.014", 
-                 "12C", "ion_count", "1721", "41.4849370253831", "0"))
+  expect_equal(data$value[3], 1508) # spot check
+  expect_equal(data$variable[3], "12C") # spot check
+  expect_equal(data$frame_size.um[3], 10.014) # spot check
+  expect_equal(data$data_type[3], "ion_count") # spot check
   
 })
 
@@ -82,12 +80,12 @@ test_that("test that it is possible to read all map data in a folder", {
   
   # data checks
   expect_equal(data$variable %>% unique(), c("12C", "13C", "14N12C", "15N12C"))
-  expect_equal(data %>% nrow(), data$frame_size.px[1]^2 * length(data$variable %>% unique()))
+  expect_equal(as.integer(data$frame_size.px[1]^2 * length(data$variable %>% unique())), data %>% nrow()) 
   expect_equal(data %>% names(), c("x.px", "y.px", "frame_size.px", "x.um", "y.um", "frame_size.um", 
                                    "variable", "data_type", "value", "sigma", "ROI"))
-  expect_equal(data %>% {.[1,]} %>% as.character(), 
-               c("1", "1", "256", "0.0391171875", "0.0391171875", "10.014", 
-                 "12C", "ion_count", "1721", "41.4849370253831", "0"))
-  
+  expect_equal(data$value[nrow(data)], 4) # spot check
+  expect_equal(data$variable[nrow(data)], "15N12C") # spot check
+  expect_equal(data$frame_size.um[nrow(data)], 10.014) # spot check
+  expect_equal(data$data_type[nrow(data)], "ion_count") # spot check
   
 })
