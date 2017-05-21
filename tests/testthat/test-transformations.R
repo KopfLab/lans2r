@@ -1,6 +1,6 @@
 context("Data transformations")
 
-test_that("transformation safety checks are in place", {
+test_that("test that transformation safety checks are in place", {
   expect_error(spread_data(data_frame()), "column not in dataset: 'variable'")
   expect_error(spread_data(data_frame(variable = "A")), "column not in dataset: 'value'")
   expect_error(spread_data(data_frame(variable = "A", value = 5)), "column not in dataset: 'sigma'")

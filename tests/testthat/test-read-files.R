@@ -1,10 +1,10 @@
 context("Read files")
 
-test_that("test files exist", {
+test_that("test that test files exist", {
   expect_true(file.exists(system.file("extdata", "nanosims_data", package = "lans2r")))
 })
 
-test_that("possible to read ROI data file", {
+test_that("test that it is possible to read ROI data file", {
   expect_true(file.exists(file <- system.file("extdata", "nanosims_data", "analysis1", "dat", "12C.dac", package = "lans2r")))
   
   # check return values from file
@@ -20,7 +20,7 @@ test_that("possible to read ROI data file", {
 })
 
 
-test_that("possible to read ROI z-stack data file", {
+test_that("test that it is possible to read ROI z-stack data file", {
   expect_true(file.exists(file <- system.file("extdata", "nanosims_data", "analysis1", "dat", "12C-z.dat", package = "lans2r")))
   
   # check return values from file
@@ -53,7 +53,7 @@ test_that("possible to read all roi data", {
                  "17.38", "192.93", "0.83", "353", "2.45"))
 })
 
-test_that("possible to read full ion data file", {
+test_that("test that it is possible to read full ion data file", {
   expect_true(file.exists(file <- system.file("extdata", "nanosims_data", "analysis1", "mat", "12C.mat", package = "lans2r")))
   
   # check return values from file (names, size, first row)
@@ -71,7 +71,7 @@ test_that("possible to read full ion data file", {
   
 })
 
-test_that("possible to read all map data in a folder", {
+test_that("test that it is possible to read all map data in a folder", {
   
   expect_error(read_map_data("NOFOLDER"), "directory does not exist")
   

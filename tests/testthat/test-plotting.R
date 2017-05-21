@@ -1,6 +1,6 @@
 context("Plotting")
 
-test_that("plotting is working correctly", {
+test_that("test that plotting is working correctly", {
   
   expect_error(plot_maps(data_frame()), "no rows")
   

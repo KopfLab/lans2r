@@ -1,6 +1,6 @@
 context("Load data")
 
-test_that("proper errors are thrown in data loading", {
+test_that("test that proper errors are thrown in data loading", {
   
   # error and file checks
   expect_error(load_LANS_summary("NOFOLDER"), "directory does not exist")
@@ -12,7 +12,7 @@ test_that("proper errors are thrown in data loading", {
   
 })
 
-test_that("it is possible to load multiple LANS summaries", {
+test_that("test that it is possible to load multiple LANS summaries", {
   
   expect_true(file.exists(folder <- system.file("extdata", "nanosims_data", package = "lans2r")))
   
@@ -74,7 +74,7 @@ test_that("it is possible to load multiple LANS summaries", {
   
 })
 
-test_that("it is possible to load LANS maps", {
+test_that("test that it is possible to load LANS maps", {
   
   expect_true(file.exists(folder <- system.file("extdata", "nanosims_data", package = "lans2r")))
   
