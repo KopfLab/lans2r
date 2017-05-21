@@ -35,7 +35,7 @@ data <-
   ) 
 ```
 
-To calculate ratios and abundances, simply specificy which ions you would like to ratio. Note: for convenience, we make use of the pipe operator `%>%` for chaining multiple operations. For more information on the pipe, take a look at the [magrittr package](https://cran.r-project.org/web/packages/magrittr/index.html). 
+To calculate ratios and abundances, simply specificy which ions you would like to ratio. Note: for convenience, we make use of the pipe operator `%>%` for chaining multiple operations. For more information on the pipe, take a look at the [magrittr package](https://CRAN.R-project.org/package=magrittr). 
 
 ```{r}
 data <- data %>% 
@@ -143,5 +143,4 @@ plot_maps(maps %>% filter(variable == "14N12C", analysis %in% c("analysis1", "an
 ## Future directions
 
 Note that for plotting maps, *lans2r* does not (yet) support any smoothing so although the `plot_maps` function theoretically supports plotting ratios and abundances as well (which can be calculated from the maps data the same way using `calculate_ratios` and `calculate_abundances`), in practice this does not work so well because individual pixels often have extreme values offsetting proper scaling. This might be part of future expansions if the package sees a lot of use so please email with suggestions if you find it helpful.
-
 
