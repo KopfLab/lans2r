@@ -51,7 +51,7 @@ Example
 library(dplyr) # use of %>% and filter
 library(lans2r) # the lans2r package
 
-# load two of the data sets supplised with lans2r
+# load two of the data sets supplied with lans2r
 load_LANS_maps (
   analysis = c("analysis1", "analysis2"),
   base_dir = system.file("extdata", "nanosims_data", package = "lans2r")
