@@ -62,4 +62,4 @@ load_LANS_maps (
   plot_maps(normalize = TRUE, draw_ROIs = FALSE)
 ```
 
-![](README-ion_maps_example-1.png)
+![](inst/doc/README-ion_maps_example-1.png)
