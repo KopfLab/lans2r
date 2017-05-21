@@ -73,8 +73,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lans2r)
 <span class="kw">library</span>(dplyr)
 <span class="kw">library</span>(knitr)</code></pre></div>
-<div id="calculate" class="section level1">
-<h1><code>calculate</code></h1>
 <p>The <code>?calculate</code> function is intended to make it easy and efficient to calculate sets of derived quantities (e.g. ratios from <code>13C</code> and <code>12C</code> data but also from <code>15N12C</code> and <code>14N12C</code> data). It allows defining exactly how the derived quantities should be calculated but also makes it possible to calculate derived errors and how to go about naming the newly derived quantities. Due to its structure it allows for a large amount of flexibility to cover all possible use cases. This vignettes illustrates some basic examples how this may be used to calculate derived quantities from measured ion currents. The functions <code>?calculate_ratios</code>, <code>?calculate_abundances</code>, <code>?calculate_sums</code> are all pre-implemented examples of using <code>calculate</code> to achieve a specific task and work out of the box without additional specifications as illustrated in the main vignette.</p>
 <div id="test-data" class="section level4">
 <h4>Test data</h4>
@@ -1250,7 +1248,6 @@ derived_data2 &lt;-
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 <div id="data-visualization" class="section level1">
 <h1>Data visualization</h1>
