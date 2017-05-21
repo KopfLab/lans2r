@@ -4,7 +4,7 @@
 \name{lans2r-package}
 \alias{lans2r}
 \alias{lans2r-package}
-\title{lans2r: Work with Look at NanoSIMS data in R}
+\title{lans2r: Work with Look at NanoSIMS Data in R}
 \description{
 R interface for working with NanoSIMS ROI data defined in Look at
 NanoSIMS.
