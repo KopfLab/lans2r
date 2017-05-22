@@ -18,4 +18,8 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Sebastian Kopf \email{sebastian.kopf@colorado.edu}
+
+}
 \keyword{internal}

@@ -4,8 +4,8 @@ Description: R interface for working with NanoSIMS ROI data defined in Look at
     NanoSIMS. 
     To get started, take a look at the example vignette: \code{vignette("example", package = "lans2r")}.
 Version: 1.0.0
-Author: Sebastian Kopf
-Maintainer: Sebastian Kopf <sebastian.kopf@colorado.edu>
+Authors@R: person("Sebastian", "Kopf", email = "sebastian.kopf@colorado.edu",
+    role = c("aut", "cre"))
 URL: https://github.com/KopfLab/lans2r
 BugReports: https://github.com/KopfLab/lans2r/issues
 Depends:
