@@ -82,11 +82,10 @@ test_that("test that it is possible to load LANS maps", {
                                         base_dir = folder, quiet = T))
   
   # check data
-  expect_equal({
-    pixels <- maps %>% select(analysis, frame_size.px, variable) %>% unique() %>% 
-                 group_by(analysis) %>% summarize(n = unique(frame_size.px)^2 * length(variable))
-    sum(pixels$n)
-    }, nrow(maps)) 
+  expect_equal(nrow(maps), as.integer(256^2 * 4 * 3)) 
+  # pixels <- maps %>% select(analysis, frame_size.px, variable) %>% unique() %>% 
+  #   group_by(analysis) %>% summarize(n = unique(frame_size.px)^2 * length(variable))
+  # as.integer(sum(pixels$n))
   
   expect_equal(maps$variable %>% unique(), c("12C", "13C", "14N12C", "15N12C"))
   expect_equal(maps %>% names(), 

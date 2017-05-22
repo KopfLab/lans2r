@@ -60,7 +60,8 @@ test_that("test that it is possible to read full ion data file", {
                c("x.px", "y.px", "frame_size.px", "x.um", "y.um", "frame_size.um", 
                  "variable", "data_type", "value", "sigma", "ROI"))
   
-  expect_equal(data$frame_size.px[1]^2 %>% as.integer(), data %>% nrow()) 
+  expect_equal(data %>% nrow(), as.integer(256^2))
+  #as.integer(data$frame_size.px[1]*data$frame_size.px[1])
   
   expect_equal(data$value[3], 1508) # spot check
   expect_equal(data$variable[3], "12C") # spot check
@@ -80,7 +81,8 @@ test_that("test that it is possible to read all map data in a folder", {
   
   # data checks
   expect_equal(data$variable %>% unique(), c("12C", "13C", "14N12C", "15N12C"))
-  expect_equal(as.integer(data$frame_size.px[1]^2 * length(data$variable %>% unique())), data %>% nrow()) 
+  expect_equal(data %>% nrow(), as.integer(256^2 * 4))
+  #as.integer(data$frame_size.px[1] * data$frame_size.px[1] * length(unique(data$variable)))
   expect_equal(data %>% names(), c("x.px", "y.px", "frame_size.px", "x.um", "y.um", "frame_size.um", 
                                    "variable", "data_type", "value", "sigma", "ROI"))
   expect_equal(data$value[nrow(data)], 4) # spot check
