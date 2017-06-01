@@ -15,9 +15,9 @@ Installation
 
 ``` r
 # Install the latest release of this package from CRAN
-#install.packages("lans2r") # NOTE: v. 1.0 currently in submission proces
+install.packages("lans2r") 
 # Or the the development version directly from GitHub using devtools:
-install.packages("devtools")
+# install.packages("devtools")
 devtools::install_github('KopfLab/lans2r')
 ```
 
