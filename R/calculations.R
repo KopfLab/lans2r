@@ -18,7 +18,7 @@ calculate <- function(data, data_type, ..., value_fun,
                       error_fun = function(...) return(NA), 
                       name_fun = default_name,
                       filter_new = NULL,
-                      quiet = F) {
+                      quiet = FALSE) {
   
   # checks
   sapply(c("variable", "value", "data_type"), col_check, data, sys.call())
@@ -146,7 +146,7 @@ calculate <- function(data, data_type, ..., value_fun,
 #' @return the original data frame with the sums information appended (data_type == "ion_sum")
 #' @family calculations
 #' @export
-calculate_sums <- function(data, ..., name_fun = default_name, quiet = F) {
+calculate_sums <- function(data, ..., name_fun = default_name, quiet = FALSE) {
   
   # function to sum up arbitrary number of vectors by entry
   sum_vectors <- 
@@ -193,7 +193,7 @@ calculate_sums <- function(data, ..., name_fun = default_name, quiet = F) {
 #' @return the original data frame with the ratio information appended (all ratios have data_type == "ratio")
 #' @family calculations
 #' @export
-calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
+calculate_ratios <- function(data, ..., name_fun = default_name, quiet = FALSE) {
   
   # default name fun
   default_name <- function(m, M) paste0(deparse(substitute(m)),"/",deparse(substitute(M)))
@@ -226,7 +226,7 @@ calculate_ratios <- function(data, ..., name_fun = default_name, quiet = F) {
 #' @return the original data frame with the fractional abundance information appended (all fractional abundances are in % and have data_type == "abundance")
 #' @family calculations
 #' @export
-calculate_abundances <- function(data, ..., name_fun = default_name, quiet = F) {
+calculate_abundances <- function(data, ..., name_fun = default_name, quiet = FALSE) {
   
   # default name fun
   default_name = function(m, M) paste(deparse(substitute(m)), "F")

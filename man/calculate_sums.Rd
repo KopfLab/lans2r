@@ -4,7 +4,7 @@
 \alias{calculate_sums}
 \title{Calculate ion sums}
 \usage{
-calculate_sums(data, ..., name_fun = default_name, quiet = F)
+calculate_sums(data, ..., name_fun = default_name, quiet = FALSE)
 }
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}}
@@ -29,6 +29,9 @@ suitable for calculating other types of sums where other types of error propagat
 may be more appropriate.
 }
 \seealso{
-Other calculations: \code{\link{calculate_abundances}},
-  \code{\link{calculate_ratios}}, \code{\link{calculate}}
+Other calculations: 
+\code{\link{calculate_abundances}()},
+\code{\link{calculate_ratios}()},
+\code{\link{calculate}()}
 }
+\concept{calculations}

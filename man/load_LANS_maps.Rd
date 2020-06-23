@@ -4,8 +4,13 @@
 \alias{load_LANS_maps}
 \title{Load LANS ion map data}
 \usage{
-load_LANS_maps(analysis, ..., base_dir = ".", ion_data_only = TRUE,
-  quiet = F)
+load_LANS_maps(
+  analysis,
+  ...,
+  base_dir = ".",
+  ion_data_only = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{analysis}{- vector of LANS analysis folder names}

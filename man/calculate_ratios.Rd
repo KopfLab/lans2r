@@ -4,7 +4,7 @@
 \alias{calculate_ratios}
 \title{Calculate isotope ratios}
 \usage{
-calculate_ratios(data, ..., name_fun = default_name, quiet = F)
+calculate_ratios(data, ..., name_fun = default_name, quiet = FALSE)
 }
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}}
@@ -27,6 +27,9 @@ from many analyses. It can also be applied to ion_sums generate by calculate_sum
 to calculate elemental ratios (careful, ionization efficiencies skew their scaling!)
 }
 \seealso{
-Other calculations: \code{\link{calculate_abundances}},
-  \code{\link{calculate_sums}}, \code{\link{calculate}}
+Other calculations: 
+\code{\link{calculate_abundances}()},
+\code{\link{calculate_sums}()},
+\code{\link{calculate}()}
 }
+\concept{calculations}

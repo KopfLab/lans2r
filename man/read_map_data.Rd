@@ -4,7 +4,7 @@
 \alias{read_map_data}
 \title{Read LANS full ion map data (.mat) files}
 \usage{
-read_map_data(mat_folder, ion_data_only = TRUE, quiet = F)
+read_map_data(mat_folder, ion_data_only = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{mat_folder}{- the LANS mat directory with the ions' .mat files}

@@ -4,8 +4,12 @@
 \alias{read_roi_data}
 \title{Read LANS data summary (.dac/.dat) files}
 \usage{
-read_roi_data(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE,
-  quiet = F)
+read_roi_data(
+  dat_folder,
+  ion_data_only = TRUE,
+  load_zstacks = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{dat_folder}{- the LANS dat directory with the ions' .dac files}

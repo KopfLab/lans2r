@@ -4,8 +4,16 @@
 \alias{calculate}
 \title{Calculate derived data}
 \usage{
-calculate(data, data_type, ..., value_fun, error_fun = function(...)
-  return(NA), name_fun = default_name, filter_new = NULL, quiet = F)
+calculate(
+  data,
+  data_type,
+  ...,
+  value_fun,
+  error_fun = function(...) return(NA),
+  name_fun = default_name,
+  filter_new = NULL,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{data}{a data frame with lans2r data, can be grouped to do calculations within individual groups}
@@ -32,7 +40,9 @@ This function allows easy calculation of any quantities derived from other varia
 \link{calculate_sums}, \link{calculate_ratios} and \link{calculate_abundances} are all based on this and provide an easy way for common standard calculations.
 }
 \seealso{
-Other calculations: \code{\link{calculate_abundances}},
-  \code{\link{calculate_ratios}},
-  \code{\link{calculate_sums}}
+Other calculations: 
+\code{\link{calculate_abundances}()},
+\code{\link{calculate_ratios}()},
+\code{\link{calculate_sums}()}
 }
+\concept{calculations}

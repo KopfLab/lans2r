@@ -17,7 +17,7 @@
 #' @param quiet - whether to report information on the loaded data or not
 #' @return concatenated data_frame with all the ROIs' data, with identifier columns 'plane', 'ROI' and 'variable'
 #' @export
-read_roi_data <- function(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE, quiet = F) {
+read_roi_data <- function(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE, quiet = FALSE) {
   # checks
   if (!dir.exists(dat_folder))
     stop("directory does not exist: ", dat_folder, call. =FALSE)
@@ -47,7 +47,7 @@ read_roi_data <- function(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE,
       lapply(zstack_files, read_roi_ion_zstack_data_file) %>% bind_rows() %>% 
       left_join(roi_data %>% select(-plane, -value, -sigma), by = c("ROI", "data_type", "variable"))
   } else {
-    zstack_data <- data_frame()
+    zstack_data <- tibble()
   }
   
   if (!quiet) {
@@ -98,7 +98,7 @@ read_roi_ion_data_file <- function (file) {
         coord_x = "Xi", coord_y = "Yi", 
         size = "SIZEi", pixels = "PIXELSi", 
         LW_ratio = "LWratio"
-      )) %>% as_data_frame()
+      )) %>% as_tibble()
 }
 
 
@@ -141,7 +141,7 @@ read_roi_ion_zstack_data_file <- function (file) {
 #' @param quiet - whether to report information on the loaded data or not
 #' @return concatenated data_frame with the full ion maps data
 #' @export
-read_map_data <- function(mat_folder, ion_data_only = TRUE, quiet = F) {
+read_map_data <- function(mat_folder, ion_data_only = TRUE, quiet = FALSE) {
   # checks
   if (!dir.exists(mat_folder))
     stop("directory does not exist: ", mat_folder, call.=FALSE)
@@ -184,10 +184,10 @@ read_full_ion_data_file <- function (file) {
   ion <- sub("^(.+)\\.mat$", "\\1", basename(file))
   mat <- R.matlab::readMat(file)
   rois <- mat$CELLS %>% reshape2::melt() %>% 
-    as_data_frame() %>% rename (ROI = value)
+    as_tibble() %>% rename (ROI = value)
   mat$IM %>% 
     # melt is significnatly faster than gather for this kind of matrix calculation
-    reshape2::melt() %>% as_data_frame() %>% 
+    reshape2::melt() %>% as_tibble() %>% 
     left_join(rois, by = c("Var1", "Var2")) %>% 
     mutate_(
       .dots = 
