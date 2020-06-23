@@ -4,11 +4,12 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = file.path("tools", "README-")
+  fig.path = "man/figures/README-",
+  out.width = "100%"
 )
 ```
 
@@ -18,6 +19,7 @@ knitr::opts_chunk$set(
 [![Build Status](https://travis-ci.org/KopfLab/lans2r.svg?branch=master)](https://travis-ci.org/KopfLab/lans2r)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/KopfLab/lans2r?branch=master&svg=true)](https://ci.appveyor.com/project/KopfLab/lans2r)
 [![codecov.io](https://codecov.io/github/KopfLab/lans2r/coverage.svg?branch=master)](https://codecov.io/github/KopfLab/lans2r?branch=master)
+[![Documentation](https://img.shields.io/badge/docs-online-green.svg)](https://kopflab.github.io/lans2r/reference/)
 
 ## Overview
 
@@ -41,19 +43,7 @@ Once installed, load the package with:
 library(lans2r)
 ```
 
-A concise overview demonstrating the functionality of the **lans2r** package is provided in the main vignette for the package (**[HTML](https://rawgit.com/KopfLab/lans2r/master/inst/doc/lans2r.html)**, **[source](https://github.com/KopfLab/lans2r/raw/master/vignettes/lans2r.Rmd)**), which can also be access from within R by calling:
-
-```{r, eval=FALSE}
-vignette("lans2r")
-```
-
-Additional vignettes provide details on extended functionality and can be accessed easily by browsing the package vignettes from within R: 
-
-```{r, eval=FALSE}
-browseVignettes("lans2r")
-```
-
-For details on individual funcation, please consult the package help (e.g. `?load_LANS_summary`).
+A concise overview demonstrating the functionality of the **lans2r** package is provided in the [main vignette](https://kopflab.github.io/lans2r/articles/lans2r.html) for the package, which can also be accessed from within R by calling `vignette("lans2r")`. Additional vignettes provide details on extended functionality and can be accessed easily by browsing the package vignettes from within R calling `browseVignettes("lans2r")`. For details on individual funcation, please consult the package help (e.g. `?load_LANS_summary`).
 
 ## Example
 
