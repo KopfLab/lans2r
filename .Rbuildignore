@@ -11,3 +11,4 @@
 ^README\.Rmd$
 ^cran-comments\.md$
 ^logo\.png$
+^_pkgdown.yml$

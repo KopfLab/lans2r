@@ -6,8 +6,8 @@
 \usage{
 plot_maps(
   data,
-  draw_ROIs = T,
-  normalize = T,
+  draw_ROIs = TRUE,
+  normalize = TRUE,
   color_scale = c("black", "white")
 )
 }

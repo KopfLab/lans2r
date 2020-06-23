@@ -72,7 +72,7 @@ read_roi_data <- function(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE,
 read_roi_ion_data_file <- function (file) {
   stopifnot(file.exists(file))
   ion <- sub("^(.+)\\.dac$", "\\1", basename(file))
-  data <- read.table(file, header=T, skip=1, fill=T, comment.char = "", sep="\t", check.names = F)
+  data <- read.table(file, header = TRUE, skip=1, fill = TRUE, comment.char = "", sep="\t", check.names = FALSE)
   
   # name checks (what is expected in dac files)
   names_exp <- c("# i", "Xi", "Yi", "MEANi", "Poiss_Ei", "Poiss_%Ei", "SIZEi", "PIXELSi", "LWratio")
@@ -82,23 +82,25 @@ read_roi_ion_data_file <- function (file) {
   }
   
   data %>% 
-    mutate_(
-      .dots = list(
-        plane = as.lazy(~"all"), 
-        data_type = as.lazy(~"ion_count"),
-        variable = as.lazy(~ion),
-        sigma = as.lazy(~iso.errN(MEANi)) 
-      )) %>% # recalculating it to be more precise
-    select_(
-      .dots = list(
-        "plane", ROI = "`# i`", 
-        "data_type", "variable",
-        value = "MEANi", 
-        "sigma", 
-        coord_x = "Xi", coord_y = "Yi", 
-        size = "SIZEi", pixels = "PIXELSi", 
-        LW_ratio = "LWratio"
-      )) %>% as_tibble()
+    mutate(
+      plane = "all", 
+      data_type = "ion_count",
+      variable = ion,
+      sigma = iso.errN(.data$MEANi) 
+    ) %>% # recalculating it to be more precise
+    select(
+      .data$plane,
+      ROI = .data$`# i`,
+      .data$data_type,
+      .data$variable,
+      value = .data$MEANi,
+      .data$sigma,
+      coord_x = .data$Xi, 
+      coord_y = .data$Yi, 
+      size = .data$SIZEi, 
+      pixels = .data$PIXELSi, 
+      LW_ratio = .data$LWratio
+    ) %>% as_tibble()
 }
 
 
@@ -107,21 +109,21 @@ read_roi_ion_zstack_data_file <- function (file) {
   stopifnot(file.exists(file))
   V1 <- NULL # global variable definition
   ion <- sub("^([0-9A-Z]+)\\-z.dat$", "\\1", basename(file))
-  read.table(file, header = F, skip = 3, comment.char = "", sep = "\t") %>%
+  read.table(file, header = FALSE, skip = 3, comment.char = "", sep = "\t") %>%
     tidyr::gather(var, value, -V1) %>% 
-    rename_(.dots = list(plane = "V1")) %>% 
-    group_by(plane) %>% 
+    rename(plane = .data$V1) %>% 
+    group_by(.data$plane) %>% 
     mutate(
       data_type = "ion_count",
       variable = ion,
       ROI = rep(seq(1, n()/2), each = 2),
       col = sub("V(\\d+)", "\\1", var) %>% as.numeric,
       var = ifelse(col %% 2 == 0, "value", "sigma")) %>% 
-    select(-col) %>% 
+    select(-.data$col) %>% 
     ungroup() %>% 
     tidyr::spread(var, value) %>% 
-    mutate(plane = as.character(plane), # to fit with 'all' plane
-           sigma = iso.errN(value)) # recalculating it to be more precise
+    mutate(plane = as.character(.data$plane), # to fit with 'all' plane
+           sigma = iso.errN(.data$value)) # recalculating it to be more precise
 }
 
 # Raw data (.mat) files ============
@@ -189,23 +191,20 @@ read_full_ion_data_file <- function (file) {
     # melt is significnatly faster than gather for this kind of matrix calculation
     reshape2::melt() %>% as_tibble() %>% 
     left_join(rois, by = c("Var1", "Var2")) %>% 
-    mutate_(
-      .dots = 
-        list(
-          variable = as.lazy(~ion),
-          data_type = as.lazy(~"ion_count"), 
-          sigma = as.lazy(~iso.errN(value)),
-          x.px = as.lazy(~Var2),
-          y.px = as.lazy(~max(Var1) - Var1 + 1),
-          frame_size.px = as.lazy(~max(x.px)),
-          frame_size.um = mat$xyscale[1,1],
-          x.um = as.lazy(~x.px/frame_size.px * frame_size.um),
-          y.um = as.lazy(~y.px/frame_size.px * frame_size.um)
-        )
+    mutate(
+      variable = ion,
+      data_type = "ion_count",
+      sigma = iso.errN(.data$value),
+      x.px = .data$Var2,
+      y.px = max(.data$Var1) - .data$Var1 + 1,
+      frame_size.px = max(.data$x.px),
+      frame_size.um = mat$xyscale[1,1],
+      x.um = .data$x.px/.data$frame_size.px * .data$frame_size.um,
+      y.um = .data$y.px/.data$frame_size.px * .data$frame_size.um
     ) %>% 
-    select_(.dots = c("x.px", "y.px", "frame_size.px", "x.um", "y.um", 
-                      "frame_size.um", "variable", "data_type", "value", 
-                      "sigma", "ROI")) %>% 
-    arrange_(.dots = c("x.px", "y.px"))
+    select(c("x.px", "y.px", "frame_size.px", "x.um", "y.um", 
+             "frame_size.um", "variable", "data_type", "value", 
+             "sigma", "ROI")) %>% 
+    arrange(.data$x.px, .data$y.px)
 }
 
