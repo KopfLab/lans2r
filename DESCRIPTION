@@ -17,12 +17,13 @@ Imports:
     rlang,
     R.matlab
 Suggests:
+    covr,
     testthat,
-    rmarkdown,
     knitr,
-    covr
+    rmarkdown
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
 RoxygenNote: 7.0.2
+Roxygen: list(markdown = TRUE)

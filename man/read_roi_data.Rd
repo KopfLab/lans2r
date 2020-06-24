@@ -12,13 +12,21 @@ read_roi_data(
 )
 }
 \arguments{
-\item{dat_folder}{- the LANS dat directory with the ions' .dac files}
+\item{dat_folder}{\itemize{
+\item the LANS dat directory with the ions' .dac files
+}}
 
-\item{ion_data_only}{- by default TRUE, i.e. ignores all non-ion data files}
+\item{ion_data_only}{\itemize{
+\item by default TRUE, i.e. ignores all non-ion data files
+}}
 
-\item{load_zstacks}{- whether to load any z_stacks found, by default TRUE}
+\item{load_zstacks}{\itemize{
+\item whether to load any z_stacks found, by default TRUE
+}}
 
-\item{quiet}{- whether to report information on the loaded data or not}
+\item{quiet}{\itemize{
+\item whether to report information on the loaded data or not
+}}
 }
 \value{
 concatenated data_frame with all the ROIs' data, with identifier columns 'plane', 'ROI' and 'variable'
