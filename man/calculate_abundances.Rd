@@ -4,7 +4,7 @@
 \alias{calculate_abundances}
 \title{Calculate isotope fractional abundances}
 \usage{
-calculate_abundances(data, ..., name_fun = default_name, quiet = F)
+calculate_abundances(data, ..., name_fun = default_name, quiet = FALSE)
 }
 \arguments{
 \item{data}{a data frame with raw ion counts retrieved from \code{\link{load_LANS_summary}}}
@@ -26,6 +26,9 @@ LANS_summary and LANS_maps loading but can be slow if LANS_maps is combined
 from many analyses.
 }
 \seealso{
-Other calculations: \code{\link{calculate_ratios}},
-  \code{\link{calculate_sums}}, \code{\link{calculate}}
+Other calculations: 
+\code{\link{calculate_ratios}()},
+\code{\link{calculate_sums}()},
+\code{\link{calculate}()}
 }
+\concept{calculations}

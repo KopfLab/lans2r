@@ -4,8 +4,14 @@
 \alias{load_LANS_summary}
 \title{Load LANS summary data}
 \usage{
-load_LANS_summary(analysis, ..., base_dir = ".", ion_data_only = TRUE,
-  load_zstacks = TRUE, quiet = F)
+load_LANS_summary(
+  analysis,
+  ...,
+  base_dir = ".",
+  ion_data_only = TRUE,
+  load_zstacks = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{analysis}{- vector of LANS analysis folder names}

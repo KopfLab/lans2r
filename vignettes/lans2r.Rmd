@@ -29,9 +29,9 @@ data <-
   load_LANS_summary (
     analysis = c("analysis1", "analysis2", "analysis3"), # the analysis folders
     base_dir = folder, # the data base director
-    load_zstacks = T, # whether to load z-stacks as well (have to be exported from LANS!)
+    load_zstacks = TRUE, # whether to load z-stacks as well (have to be exported from LANS!)
     info = c("turtle", "jetpack", "pizza"), # any additional information about the analyses
-    quiet = F # output information about the files
+    quiet = FALSE # output information about the files
   ) 
 ```
 

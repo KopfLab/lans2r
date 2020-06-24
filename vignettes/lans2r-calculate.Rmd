@@ -22,7 +22,7 @@ For simple illustration, this is a completely contrived artifical data set:
 ```{r}
 set.seed(123) # set random seed
 test_data <- 
-  data_frame(
+  tibble(
     ROI = rep(1:5, times = 4),
     variable = rep(LETTERS[1:4], each = 5),
     value = rpois(20,lambda = 10),

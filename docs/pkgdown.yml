@@ -1,0 +1,11 @@
+pandoc: 2.2.1
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  lans2r-calculate: lans2r-calculate.html
+  lans2r-hmr: lans2r-hmr.html
+  lans2r: lans2r.html
+urls:
+  reference: http://lans2r.kopflab.org//reference
+  article: http://lans2r.kopflab.org//articles
+

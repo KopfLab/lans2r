@@ -1,0 +1,29 @@
+title: lans2r
+url: http://lans2r.kopflab.org/
+template:
+  params:
+    bootswatch: simplex
+
+development:
+  mode: release
+
+home:
+  strip_header: true    
+
+navbar:
+  title: lans2r
+  type: default
+  left:
+  - text: "Reference"
+    href: reference/index.html
+  - text: "Introduction"
+    href: articles/lans2r.html
+  - text: "HMR Files"
+    href: articles/lans2r-hmr.html
+  - text: "Calculations"
+    href: articles/lans2r-calculate.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/kopflab/lans2r
+    
+
