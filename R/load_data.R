@@ -7,7 +7,7 @@
 #' @param ... - vectors of additional information to attach to each analysis, each argument has to have the same length as the 
 #'    'analysis' parameter (or length 1)
 #' @param base_dir - the directory where all the analysis folders are located (defaults to current directory)
-#' @param ion_data_only - whether to import only ion data [TRUE by default], rather than any derived files (e.g. ratios calculated 
+#' @param ion_data_only - whether to import only ion data (\code{TRUE} by default), rather than any derived files (e.g. ratios calculated 
 #'    within LANS). Recommend using \link{calculate_ratios} and \link{calculate_abundances} to process the raw ion counts in easy
 #'    format and good error propagation.
 #' @param load_zstacks - whether to load the planes data (ion-z.dat files need to be exported from 
@@ -39,7 +39,7 @@ load_LANS_summary <- function(analysis, ..., base_dir = ".", ion_data_only = TRU
 #' @param ... - vectors of additional information to attach to each analysis, each argument has to have the same length as the 
 #'    'analysis' parameter (or length 1)
 #' @param base_dir - the directory where all the analysis folders are located (defaults to current directory)
-#' @param ion_data_only - whether to import only ion data [TRUE by default], rather than any derived files (e.g. ratios calculated 
+#' @param ion_data_only - whether to import only ion data (\code{TRUE} by default), rather than any derived files (e.g. ratios calculated 
 #'    within LANS). Recommend using \link{calculate_ratios} and \link{calculate_abundances} to process the raw ion counts in easy
 #'    format and good error propagation.
 #' @param quiet - whether to report information on the loaded data or not
