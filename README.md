@@ -3,13 +3,13 @@
 
 # lans2r
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/lans2r)](http://cran.r-project.org/package=lans2r)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/lans2r)](https://cran.r-project.org/package=lans2r)
 [![Build
 Status](https://travis-ci.org/KopfLab/lans2r.svg?branch=master)](https://travis-ci.org/KopfLab/lans2r)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/KopfLab/lans2r?branch=master&svg=true)](https://ci.appveyor.com/project/KopfLab/lans2r)
 [![codecov.io](https://codecov.io/github/KopfLab/lans2r/coverage.svg?branch=master)](https://codecov.io/github/KopfLab/lans2r?branch=master)
-[![Documentation](https://img.shields.io/badge/docs-online-green.svg)](https://kopflab.github.io/lans2r/reference/)
+[![Documentation](https://img.shields.io/badge/docs-online-green.svg)](https://lans2r.kopflab.org/reference/)
 
 ## Overview
 
@@ -43,7 +43,7 @@ library(lans2r)
 
 A concise overview demonstrating the functionality of the **lans2r**
 package is provided in the [main
-vignette](https://kopflab.github.io/lans2r/articles/lans2r.html) for the
+vignette](https://www.kopflab.org/lans2r/articles/lans2r.html) for the
 package, which can also be accessed from within R by calling
 `vignette("lans2r")`. Additional vignettes provide details on extended
 functionality and can be accessed easily by browsing the package
