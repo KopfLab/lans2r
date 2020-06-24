@@ -29,5 +29,5 @@ The following changes were made to comply with changes in package dependencies a
  
 #### Visualization
 
- - plot panelled ion maps with ROI outlines for any number of ions and analyses
+ - plot paneled ion maps with ROI outlines for any number of ions and analyses
  

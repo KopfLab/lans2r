@@ -96,7 +96,7 @@ kable(derived_data3, d = 2)
 
 # Data visualization
 
-This data format makes it easy to have arbitrarily elaborate derived quantities and dynamically include the same calculation for multiple sets of variables. It is also a format that lends itself very well to visualiztion:
+This data format makes it easy to have arbitrarily elaborate derived quantities and dynamically include the same calculation for multiple sets of variables. It is also a format that lends itself very well to visualization:
 
 ```{r, fig.width = 9, fig.height = 8}
 library(ggplot2)
