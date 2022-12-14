@@ -21,7 +21,7 @@ test_that("test that it is possible to load multiple LANS summaries", {
     load_LANS_summary (analysis = c("analysis1", "analysis2", "analysis3"), 
                        base_dir = folder, load_zstacks = FALSE), 
     ".*read successfully.*Z-stacks were not loaded")
-  expect_silent(
+  expect_no_message(
     data <- load_LANS_summary (analysis = c("analysis1", "analysis2", "analysis3"), 
                                base_dir = folder, load_zstacks = FALSE, quiet = TRUE))
   
@@ -40,7 +40,7 @@ test_that("test that it is possible to load multiple LANS summaries", {
     load_LANS_summary (analysis = c("analysis1", "analysis2", "analysis3"), 
                        base_dir = folder, load_zstacks = TRUE), 
     ".*read successfully.*Z-stacks were loaded")
-  expect_silent(
+  expect_no_message(
     data <- load_LANS_summary (analysis = c("analysis1", "analysis2", "analysis3"), 
                                base_dir = folder, load_zstacks = TRUE, quiet = TRUE))
   
@@ -55,7 +55,7 @@ test_that("test that it is possible to load multiple LANS summaries", {
                  "17.38", "192.93", "0.83", "353", "2.45"))
   
   # additional information
-  expect_silent(
+  expect_no_message(
     data <- load_LANS_summary (analysis = c("analysis1", "analysis2", "analysis3"), 
                                information = c("run1", "run2", "run3"),
                                date = as.Date(c("2015-01-01", "2016-02-25", "2017-03-04")),
@@ -78,8 +78,8 @@ test_that("test that it is possible to load LANS maps", {
   
   expect_true(file.exists(folder <- system.file("extdata", "nanosims_data", package = "lans2r")))
   
-  expect_silent(maps <- load_LANS_maps (analysis = c("analysis1", "analysis2", "analysis3"), 
-                                        base_dir = folder, quiet = TRUE))
+  expect_no_message(maps <- load_LANS_maps (analysis = c("analysis1", "analysis2", "analysis3"), 
+                                            base_dir = folder, quiet = TRUE))
   
   # check data
   expect_equal(nrow(maps), as.integer(256^2 * 4 * 3)) 
