@@ -83,7 +83,7 @@ extract_roi_boundaries <- function(data) {
       filter(.data$roi_border) %>% 
       select(-"variable") %>% 
       inner_join(data %>% group_by(.data$ROI, .data$variable, .add = TRUE) %>% 
-                   select("variable") %>% distinct()) %>% 
+                   select("variable") %>% distinct(), multiple = "all") %>% 
       arrange(.data$x.px, .data$y.px) # merge variables back in
   )
 }

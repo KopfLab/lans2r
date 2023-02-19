@@ -45,7 +45,7 @@ read_roi_data <- function(dat_folder, ion_data_only = TRUE, load_zstacks = TRUE,
   if (load_zstacks) {
     zstack_data <- 
       lapply(zstack_files, read_roi_ion_zstack_data_file) %>% bind_rows() %>% 
-      left_join(roi_data %>% select(-plane, -value, -sigma), by = c("ROI", "data_type", "variable"))
+      left_join(roi_data %>% select(-"plane", -"value", -"sigma"), by = c("ROI", "data_type", "variable"))
   } else {
     zstack_data <- tibble()
   }
@@ -186,7 +186,7 @@ read_full_ion_data_file <- function (file) {
   ion <- sub("^(.+)\\.mat$", "\\1", basename(file))
   mat <- R.matlab::readMat(file)
   rois <- mat$CELLS %>% reshape2::melt() %>% 
-    as_tibble() %>% rename (ROI = value)
+    as_tibble() %>% rename(ROI = "value")
     # NOTE: could replace reshape2::melt with this but not clear it'd be faster
     # tibble::as_tibble() %>% 
     # tibble::rowid_to_column(var = "Var1") %>% 
