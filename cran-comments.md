@@ -1,10 +1,8 @@
-Update of existing CRAN package to address problems that have arisen from recent R version and depencency updates. Thank you for considering the new version for release.
+Update of existing CRAN package to address syntax warnings that have arisen from recent updates in the tidyselect and dplyr dependencies. Thank you for considering the new version for release.
 
 ## Test environments
 
-* Local OS X install, R 3.6.3
-* Ubuntu 16.04 (on travis-ci), R 3.6.3, R 4.0.0
-* Windows Server 2012 R2 x64 (on AppVeyor), R 4.0.2
+* Local OS X install, R 4.2.2
 * Win-builder (devel and release)
 
 ## R CMD check results
