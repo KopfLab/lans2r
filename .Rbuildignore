@@ -12,3 +12,4 @@
 ^cran-comments\.md$
 ^logo\.png$
 ^_pkgdown.yml$
+^CRAN-SUBMISSION$
